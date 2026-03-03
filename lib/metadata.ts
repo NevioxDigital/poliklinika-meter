@@ -1,0 +1,156 @@
+import type { Metadata } from 'next';
+import { cacheLife, cacheTag } from 'next/cache';
+import { baseUrl, specijalnostiRoute } from '@/routes';
+import { trimTitle,trimDescription } from './utils';
+import { defaultRobots,cleanKeywords,getSocialMetadata } from './metadata-helpers';
+
+
+/**
+ * --- METADATA ZA POČETNU STRANICU ---
+ */
+export const homeMetadata = async () => {
+  'use cache';
+  cacheLife('max');
+  cacheTag('metadata-home');
+
+ const title = 'Poliklinika Meter - Specijalistička poliklinika u Imotskom';
+    const description = 'Poliklinika Meter je specijalistička poliklinika smještena u Imotskom, posvećena pružanju vrhunske zdravstvene skrbi u području interne medicine, ginekologije i medicine rada. Naša misija je unaprijediti zdravlje i dobrobit naših pacijenata kroz stručnu njegu, inovativne pristupe i individualizirane planove liječenja. Posjetite nas i doživite vrhunsku medicinsku uslugu u srcu Dalmacije.';
+const keywords = ['Poliklinika Meter', 'specijalistička poliklinika', 'Imotski', 'interna medicina', 'ginekologija', 'medicina rada', 'zdravstvena skrb', 'pregledi', 'dijagnostika'];
+const alternates = {
+  canonical: baseUrl,
+};
+  return {
+    title: trimTitle(title),
+    description: trimDescription(description),
+    keywords: cleanKeywords(keywords),
+    alternates,
+    robots: defaultRobots,
+    ...getSocialMetadata({
+      title,
+      description,
+      url: alternates.canonical,
+      type: 'website',
+    }),
+  } satisfies Metadata;
+};
+
+/**
+ * --- METADATA ZA SPECIJALNOSTI (Interna, Ginekologija itd.) ---
+ */
+export async function getServiceMetadata(title: string, description: string, slug: string): Promise<Metadata> {
+  const fullTitle = `${title} | Poliklinika Meter`;
+  const url = `${baseUrl}${specijalnostiRoute}/${slug}`;
+
+  return {
+    title: trimTitle(fullTitle),
+    description: trimDescription(description),
+    alternates: {
+      canonical: url,
+    },
+    robots: defaultRobots,
+    openGraph: {
+      title: fullTitle,
+      description,
+      url,
+      type: 'article',
+    },
+  } satisfies Metadata;
+}
+
+/**
+ * --- SCHEMAS (JSON-LD) ---
+ */
+
+// --- MEDICAL BUSINESS SCHEMA (Glavni identitet klinike) ---
+export const getOrganizationSchema =  async() => {
+  'use cache';
+  cacheLife('max');
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalBusiness',
+    '@id': `${baseUrl}/#organization`,
+    name: 'Poliklinika Meter',
+    url: baseUrl,
+    logo: `${baseUrl}/logo.png`,
+    image: `${baseUrl}/`,
+    description: 'Specijalistička poliklinika u Imotskom za internu medicinu, ginekologiju i medicinu rada.',
+    telephone: '+38521XXXXXX', // Unesi pravi broj
+    email: 'info@poliklinika-meter.hr',
+    priceRange: '$$',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Ulica XXXX XXXX', // Unesi pravu adresu
+      addressLocality: 'Imotski',
+      postalCode: '21000',
+      addressCountry: 'HR',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: '43.5081', 
+      longitude: '16.4402',
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '08:00',
+        closes: '20:00',
+      }
+    ],
+    medicalSpecialty: [
+      'Cardiovascular',
+      'Gynecologic',
+      'InternalMedicine',
+      'Neurological',
+      'PublicHealth' // Za medicinu rada
+    ],
+    sameAs: [
+      'https://www.facebook.com/poliklinikameter',
+      'https://www.instagram.com/poliklinikameter',
+    ],
+  };
+};
+
+// --- SERVICE SCHEMA (Za pojedine preglede) ---
+export const getMedicalServiceSchema = (name: string, description: string, path: string) => ({
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  '@id': `${baseUrl}${path}#service`,
+  name: `${name} - Poliklinika Meter Imotski`,
+  description: description,
+  url: `${baseUrl}${path}`,
+  provider: {
+    '@id': `${baseUrl}/#organization`,
+  },
+  mainEntity: {
+    '@type': 'MedicalCondition', // Ili 'MedicalProcedure' ovisno o usluzi
+    name: name,
+  },
+});
+
+// --- FAQ SCHEMA ---
+export const getFAQSchema = (faqs: { q: string; a: string }[], pageUrl: string) => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${pageUrl}#faq`,
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.a,
+    },
+  })),
+});
+
+/**
+ * --- VIEWPORT ---
+ */
+export function generateViewport() {
+  return {
+    width: 'device-width',
+    initialScale: 1,
+    themeColor: '#0ea5e9', // Prilagodi boji svoje poliklinike (npr. primarna plava)
+  };
+}
