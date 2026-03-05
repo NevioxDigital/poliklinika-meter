@@ -1,0 +1,66 @@
+import { ChevronRight } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/button';
+import HeroImage from '@/public/hero.jpg';
+import { kontaktRoute, specijalnostiRoute } from '@/routes';
+
+export const Hero = () => {
+  return (
+    <section className="relative">
+      <div className="container px-4 mx-auto z-10">
+        {/* Grid Container */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 items-start">
+          {/* Content: Left Side (2/3 width) */}
+          <div className="lg:col-span-2 space-y-6 spacing-section-sm">
+            <h1>
+              Vrhunska Medicinska Skrb u Srcu <span className="text-primary">Imotskog</span>
+            </h1>
+            <p className="max-w-2xl text-muted-foreground">
+              Poliklinika Meter pruža sveobuhvatne specijalističke preglede u Imotskom uz
+              najmoderniju dijagnostiku i tim vrhunskih stručnjaka.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Link href={kontaktRoute} passHref>
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto rounded-2xl px-8 h-14 shadow-lg shadow-primary/20 cursor-pointer group"
+                >
+                  Naručite se na pregled
+                  <ChevronRight className="ml-1 w-5 h-5 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
+                </Button>
+              </Link>
+              <Link href={specijalnostiRoute} passHref>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full sm:w-auto rounded-2xl px-8 h-14 cursor-pointer"
+                >
+                  Naše specijalnosti
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Image: Right Side (1/3 width) */}
+          <div className="lg:col-span-1 relative">
+            <div className="relative rounded-xl shadow-xl">
+              <Image
+                src={HeroImage} // Replace with your actual image path
+                alt="Poliklinika Meter tim"
+                title="Poliklinika Meter tim"
+                width={600}
+                height={800}
+                className="object-cover rounded-xl shadow-xl w-full h-full"
+              />
+              {/* Decorative element behind image */}
+              <div className="absolute -bottom-3 -right-3 -z-10 w-full h-full border-4 border-primary/20 rounded-xl" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

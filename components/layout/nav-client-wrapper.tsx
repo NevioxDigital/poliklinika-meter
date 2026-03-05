@@ -1,26 +1,19 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { DesktopNavbar } from './desktop-navbar';
 
-export interface MenuItem {
-  title: string;
-  url: string;
-  description?: string;
-  items?: MenuItem[];
-}
+import { MenuItem } from '@/types';
+
+import { DesktopNavbar } from './desktop-navbar';
 
 interface NavbarClientWrapperProps {
   menuItems: MenuItem[];
 }
 
-const MobileNavbar = dynamic(
-  () => import('./mobile-navbar').then((mod) => mod.MobileNavbar),
-  { 
-    ssr: false, 
-    loading: () => <div className="h-16 md:hidden" /> 
-  }
-);
+const MobileNavbar = dynamic(() => import('./mobile-navbar').then((mod) => mod.MobileNavbar), {
+  ssr: false,
+  loading: () => <div className="h-16 md:hidden" />,
+});
 
 export default function NavbarClientWrapper({ menuItems }: NavbarClientWrapperProps) {
   return (

@@ -21,7 +21,7 @@ export const getSocialMetadata = ({
   title,
   description,
   url,
-  image = '/opengraph-image.png', 
+  image = '/opengraph-image.png',
   type = 'website',
   publishedTime,
   modifiedTime,
@@ -86,7 +86,7 @@ export const cleanKeywords = (keywords?: string | string[]) => {
 export const rootMetadata = {
   applicationName: 'Poliklinika Meter',
   authors: [{ name: 'Poliklinika Meter', url: baseUrl }],
-  creator: 'Neviox Digital', 
+  creator: 'Neviox Digital',
   publisher: 'Poliklinika Meter',
-  category: 'health', 
+  category: 'health',
 };

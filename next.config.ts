@@ -1,6 +1,5 @@
 import type { NextConfig } from 'next';
 
-
 const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
@@ -27,9 +26,7 @@ const nextConfig: NextConfig = {
 
     // This list ensures that the browser only downloads the tiny
     // parts of these libraries that you actually use.
-    optimizePackageImports: [
-      'lucide-react',
-    ],
+    optimizePackageImports: ['lucide-react'],
   },
 
   // ✅ 3. IMAGE OPTIMIZATION (FCP/LCP focus)
@@ -42,6 +39,5 @@ const nextConfig: NextConfig = {
     // ],
   },
 };
-
 
 export default nextConfig;

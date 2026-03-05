@@ -1,10 +1,4 @@
-/**
- * Internal Route IDs
- * These constants are used to link the Code to the Config.
- * Do not change these values, as they map to your JSON keys.
- */
 export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://poliklinika-meter.hr';
-
 
 // Ostalo
 export const specijalnostiRoute = '/specijalnosti';
@@ -24,3 +18,6 @@ export const mapsgoogleLink = 'https://maps.app.goo.gl/RTy8scVLWmkuj4Pp6';
 
 // Share Links
 export const googlebusinessShareLink = 'https://share.google/7ju2IEEQpSme3fyMq';
+
+// Developer
+export const developerLink = 'https://www.nevioxdigital.com';
