@@ -93,9 +93,9 @@ export function DesktopNavbar({ items = [] }: DesktopNavbarProps) {
       <nav
         className={cn(
           'transition-all duration-500 flex items-center justify-between px-20 h-16',
-          !isScrolled && 'w-full bg-background/50 backdrop-blur-md shadow-md',
+          !isScrolled && 'w-full bg-background backdrop-blur-md shadow-md',
           isScrolled &&
-            'w-[95%] px-8 max-w-6xl rounded-2xl bg-background/90 backdrop-blur-xl border border-border shadow-2xl',
+            'w-[95%] px-8 max-w-6xl rounded-2xl bg-background/70 backdrop-blur-xl border border-border shadow-2xl',
         )}
       >
         {/* LOGO */}
@@ -135,7 +135,7 @@ export function DesktopNavbar({ items = [] }: DesktopNavbarProps) {
                         href={item.url}
                         className={cn(
                           'px-4 py-2  transition-colors font-medium',
-                          isActive(item.url) ? 'text-secondary' : '',
+                          isActive(item.url) ? 'text-primary' : '',
                         )}
                       >
                         {item.title}

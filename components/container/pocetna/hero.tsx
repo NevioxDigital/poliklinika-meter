@@ -17,9 +17,10 @@ export const Hero = () => {
             <h1>
               Vrhunska Medicinska Skrb u Srcu <span className="text-primary">Imotskog</span>
             </h1>
-            <p className="max-w-2xl text-muted-foreground">
-              Poliklinika Meter pruža sveobuhvatne specijalističke preglede u Imotskom uz
-              najmoderniju dijagnostiku i tim vrhunskih stručnjaka.
+            <p className="md:text-xl max-w-2xl text-muted-foreground">
+              <span className="text-primary font-bold">Poliklinika Meter</span> pruža sveobuhvatne
+              specijalističke preglede u Imotskom uz najmoderniju dijagnostiku i tim vrhunskih
+              stručnjaka.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
