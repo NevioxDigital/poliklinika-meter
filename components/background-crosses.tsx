@@ -6,15 +6,15 @@ export const BackgroundCrosses = () => {
   const crosses = [
     {
       top: '10%',
-      left: '5%',
+      right: '5%',
       size: 'text-6xl',
       opacity: 'opacity-[0.07]',
       delay: '0s',
       rotate: 'rotate-0',
     },
     {
-      top: '20%',
-      right: '8%',
+      top: '25%',
+      left: '8%',
       size: 'text-8xl',
       opacity: 'opacity-[0.04]',
       delay: '2s',
@@ -22,23 +22,23 @@ export const BackgroundCrosses = () => {
     },
     {
       top: '50%',
-      left: '2%',
+      right: '2%',
       size: 'text-4xl',
       opacity: 'opacity-[0.05]',
       delay: '4s',
       rotate: '-rotate-12',
     },
     {
-      bottom: '15%',
-      right: '5%',
+      bottom: '20%',
+      left: '5%',
       size: 'text-9xl',
       opacity: 'opacity-[0.06]',
       delay: '1s',
-      rotate: 'rotate-45',
+      rotate: 'rotate-30',
     },
     {
-      bottom: '10%',
-      left: '10%',
+      bottom: '2%',
+      right: '10%',
       size: 'text-5xl',
       opacity: 'opacity-[0.03]',
       delay: '3s',
@@ -51,11 +51,7 @@ export const BackgroundCrosses = () => {
       {crosses.map((cross, i) => (
         <div
           key={i}
-          className={cn(
-            'absolute animate-pulse-slow text-primary', // Removed transition-all
-            cross.size,
-            cross.opacity,
-          )}
+          className={cn('absolute animate-pulse-slow text-primary', cross.size, cross.opacity)}
           style={{
             top: cross.top,
             left: cross.left,

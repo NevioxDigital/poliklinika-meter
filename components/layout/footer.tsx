@@ -18,7 +18,7 @@ const Footer = () => {
       <div className="flex flex-col lg:flex-row px-4 md:px-12 justify-between">
         {/* LEFT COLUMN: Branding */}
         <div className="flex flex-col items-start max-w-sm mb-12 lg:mb-0">
-          <h3 className="mb-4 font-bold text-primary">Poliklinika Meter</h3>
+          <h3 className="mb-4 font-bold text-foreground">Poliklinika Meter</h3>
           <p className="text-sm text-muted-foreground">
             Specijalistička poliklinika smještena u Imotskom, posvećena pružanju vrhunske
             zdravstvene skrbi u području interne medicine, ginekologije i medicine rada. Naša misija
@@ -31,13 +31,13 @@ const Footer = () => {
         {/* RIGHT COLUMN: Navigation from menuItems import */}
         <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-6 w-full lg:w-auto lg:ml-auto">
           {footerMenuItems.map((section: FooterMenuItem, sectionIdx: number) => (
-            <div key={sectionIdx} className=" w-full md:max-w-50">
-              <h5 className="mb-4 font-semibold text-primary/80 block">{section.title}</h5>
+            <div key={sectionIdx} className=" w-full md:max-w-60">
+              <h5 className="mb-4 font-bold text-primary block">{section.title}</h5>
               <ul className="text-muted-foreground/60 space-y-2">
                 {section.links.map((link, linkIdx) => (
                   <li
                     key={linkIdx}
-                    className="hover:text-primary text-muted-foreground transition-colors"
+                    className="hover:text-primary text-foreground transition-colors"
                   >
                     <Link href={link.url} title={link.text} className="block">
                       <span className="">{link.text}</span>
@@ -52,13 +52,13 @@ const Footer = () => {
 
       {/* BOTTOM BAR */}
       <div className="mt-12 border-t border-border flex flex-col-reverse md:flex-row justify-between items-center px-4 md:px-12 py-4">
-        <div className="text-muted-foreground  text-center md:text-left mt-4 md:mt-0">
+        <div className="text-foreground text-center md:text-left mt-4 md:mt-0">
           <p className="text-xs">
-            <span className="text-muted-foreground">&copy;</span> <CopyrightYear />{' '}
+            <span className="text-foreground">&copy;</span> <CopyrightYear />{' '}
             <span className="text-primary text-xs">Poliklinika Meter</span>. Sva prava pridržana.
           </p>
           <p className="mt-1 text-xs">
-            <Laptop className="inline-block mr-1 text-muted-foreground" size={12} />
+            <Laptop className="inline-block mr-1 text-foreground" size={12} />
             Razvoj i dizajn:{' '}
             <a
               href={developerLink}
@@ -74,7 +74,7 @@ const Footer = () => {
         <div className="flex gap-6 justify-center">
           <Link
             href={pravneinfoRoute}
-            className="text-xs text-muted-foreground hover:text-primary transition-colors"
+            className="text-xs text-foreground hover:text-primary transition-colors"
           >
             Pravne informacije
           </Link>

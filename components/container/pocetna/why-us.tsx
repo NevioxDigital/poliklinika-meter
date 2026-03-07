@@ -38,7 +38,7 @@ export const WhyUs = () => {
               </h2>
             </div>
 
-            <p className="text-lg text-slate-600 leading-relaxed">
+            <p className="text-lg text-foreground leading-relaxed">
               U Poliklinici Meter, vaša dobrobit je naš prioritet. Naš pristup temelji se na tri
               ključna stupa:
             </p>
@@ -50,7 +50,7 @@ export const WhyUs = () => {
                 'Najsuvremenija dijagnostička oprema',
                 'Individualni pristup svakom pacijentu',
               ].map((item, i) => (
-                <li key={i} className="flex items-center gap-3 text-slate-700 font-medium">
+                <li key={i} className="flex items-center gap-3 text-foreground font-medium">
                   <CheckCircle2 className="w-5 h-5 text-primary" />
                   {item}
                 </li>

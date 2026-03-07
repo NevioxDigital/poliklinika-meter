@@ -33,8 +33,8 @@ export const Services = () => {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div className="max-w-xl">
-            <h2 className="font-extrabold text-primary mb-4">Naše Usluge</h2>
-            <p className="text-muted-foreground">
+            <h2 className="font-extrabold text-foreground mb-4">Naše Usluge</h2>
+            <p className="text-foreground">
               Pružamo cjelovitu medicinsku skrb kroz specijalističke preglede i suvremenu
               dijagnostiku.
             </p>
@@ -43,7 +43,9 @@ export const Services = () => {
 
         {/* Medicina Rada Category */}
         <div className="my-16 md:my-32">
-          <h3 className="font-bold mb-8 md:mb-12 border-l-4 border-primary pl-4">Medicina Rada</h3>
+          <h3 className="font-bold mb-8 md:mb-12 border-l-4 border-primary text-foreground pl-4">
+            Medicina Rada
+          </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {medicinaRada.map((s) => (
               <LandingPageCard key={s.title} {...s} />

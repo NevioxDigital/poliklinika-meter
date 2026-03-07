@@ -50,9 +50,7 @@ export const ContactSection = ({ image, services }: ContactSectionProps) => {
           <div className="w-full rounded-xl">
             <header className="mb-6 text-left">
               <h2 className="text-3xl font-extrabold text-black mb-2">Rezervirajte Termin</h2>
-              <p className="text-muted-foreground text-sm italic">
-                Vaše zdravlje je naš prioritet.
-              </p>
+              <p className="text-foreground text-sm italic">Vaše zdravlje je naš prioritet.</p>
             </header>
 
             {state.success ? (
@@ -67,7 +65,7 @@ export const ContactSection = ({ image, services }: ContactSectionProps) => {
                   <div className="space-y-1.5">
                     <Label
                       htmlFor="firstName"
-                      className="text-xs font-bold uppercase tracking-wider text-muted-foreground"
+                      className="text-xs font-bold uppercase tracking-wider text-foreground"
                     >
                       Ime
                     </Label>
@@ -82,7 +80,7 @@ export const ContactSection = ({ image, services }: ContactSectionProps) => {
                   <div className="space-y-1.5">
                     <Label
                       htmlFor="lastName"
-                      className="text-xs font-bold uppercase tracking-wider text-muted-foreground"
+                      className="text-xs font-bold uppercase tracking-wider text-foreground"
                     >
                       Prezime
                     </Label>
@@ -99,7 +97,7 @@ export const ContactSection = ({ image, services }: ContactSectionProps) => {
                 <div className="space-y-1.5">
                   <Label
                     htmlFor="email"
-                    className="text-xs font-bold uppercase tracking-wider text-muted-foreground"
+                    className="text-xs font-bold uppercase tracking-wider text-foreground"
                   >
                     Email
                   </Label>
@@ -116,7 +114,7 @@ export const ContactSection = ({ image, services }: ContactSectionProps) => {
                 <div className="space-y-1.5">
                   <Label
                     htmlFor="phone"
-                    className="text-xs font-bold uppercase tracking-wider text-muted-foreground"
+                    className="text-xs font-bold uppercase tracking-wider text-foreground"
                   >
                     Telefon
                   </Label>
@@ -134,7 +132,7 @@ export const ContactSection = ({ image, services }: ContactSectionProps) => {
                   <div className="space-y-1.5">
                     <Label
                       htmlFor="service"
-                      className="text-xs font-bold uppercase tracking-wider text-muted-foreground"
+                      className="text-xs font-bold uppercase tracking-wider text-foreground"
                     >
                       Usluga
                     </Label>
@@ -179,7 +177,8 @@ export const ContactSection = ({ image, services }: ContactSectionProps) => {
                   disabled={pending}
                   type="submit"
                   size="lg"
-                  className="w-full h-12 rounded-xl text-md font-bold shadow-md hover:shadow-lg transition-all"
+                  variant="outline"
+                  className="w-full h-12 rounded-xl border border-primary/60 text-md text-primary hover:bg-primary hover:text-background font-bold shadow-md transition-all"
                 >
                   {pending ? (
                     <>

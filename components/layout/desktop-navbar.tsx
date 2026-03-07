@@ -150,10 +150,7 @@ export function DesktopNavbar({ items = [] }: DesktopNavbarProps) {
 
         {/* CONTACT BUTTON */}
         <Link href={kontaktRoute} passHref>
-          <Button
-            size="lg"
-            className="rounded-xl w-36 shadow-lg shadow-primary/20 cursor-pointer group"
-          >
+          <Button size="lg" className="rounded-xl w-36 cursor-pointer group">
             Naručite se
             <ChevronRight className="ml-1 w-5 h-5 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
           </Button>
@@ -177,7 +174,7 @@ const SubMenuLink = React.forwardRef<
         props.className, // Merges Base UI styles if any exist
       )}
     >
-      <div className="flex items-center justify-center shrink-0 w-10 h-10 rounded-lg bg-primary/5 group-hover:bg-primary/10 transition-colors">
+      <div className="flex items-center justify-center shrink-0 w-10 h-10 rounded-lg text-foreground  transition-colors">
         {icon}
       </div>
       <div className="flex flex-col justify-center">
