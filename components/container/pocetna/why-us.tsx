@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // components/sections/WhyUs.tsx
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
@@ -6,9 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import ContentWrapper from '@/components/ui/content-wrapper';
 
-// Assuming standard shadcn path
-
-export const WhyUs = () => {
+export const WhyUs = ({ data }: { data: any }) => {
   return (
     <section className="relative w-full min-h-150 flex items-center spacing-section">
       {/* 1. Full Size Background Image */}
@@ -31,25 +30,18 @@ export const WhyUs = () => {
           <div className="space-y-6">
             <div>
               <span className="text-primary font-bold tracking-wider uppercase text-sm mb-2 block">
-                Naša Prednost
+                {data.badge}
               </span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight">
-                Zašto odabrati Polikliniku Meter?
+                {data.title}
               </h2>
             </div>
 
-            <p className="text-lg text-foreground leading-relaxed">
-              U Poliklinici Meter, vaša dobrobit je naš prioritet. Naš pristup temelji se na tri
-              ključna stupa:
-            </p>
+            <p className="text-lg text-foreground leading-relaxed">{data.description}</p>
 
             {/* Feature List for "Why Us" */}
             <ul className="space-y-4">
-              {[
-                'Vrhunski tim liječnika specijalista',
-                'Najsuvremenija dijagnostička oprema',
-                'Individualni pristup svakom pacijentu',
-              ].map((item, i) => (
+              {data.points.map((item: any, i: any) => (
                 <li key={i} className="flex items-center gap-3 text-foreground font-medium">
                   <CheckCircle2 className="w-5 h-5 text-primary" />
                   {item}
@@ -63,7 +55,7 @@ export const WhyUs = () => {
                   size="lg"
                   className="rounded-full px-8 h-14 text-md font-semibold gap-2 transition-transform hover:scale-105"
                 >
-                  Saznaj više o našim uslugama
+                  {data.cta}
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>

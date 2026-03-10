@@ -1,12 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
+import { urlFor } from '@/lib/sanity-image';
 import HeroImage from '@/public/hero.jpg';
 import { kontaktRoute, specijalnostiRoute } from '@/routes';
 
-export const Hero = () => {
+type HeroSectionProps = {
+  data: any;
+};
+
+export const Hero = ({ data }: HeroSectionProps) => {
   return (
     <section className="relative">
       <div className="container px-4 mx-auto z-10">
@@ -15,12 +21,11 @@ export const Hero = () => {
           {/* Content: Left Side (2/3 width) */}
           <div className="lg:col-span-2 space-y-6 spacing-section-sm">
             <h1>
-              Vrhunska Medicinska Skrb u Srcu <span className="text-primary">Imotskog</span>
+              {data.title} <span className="text-primary">{data.highlightedText}</span>
             </h1>
             <p className="md:text-xl max-w-2xl text-muted-foreground">
-              <span className="text-primary font-bold">Poliklinika Meter</span> pruža sveobuhvatne
-              specijalističke preglede u Imotskom uz najmoderniju dijagnostiku i tim vrhunskih
-              stručnjaka.
+              <span className="text-primary font-bold">Poliklinika Meter</span>
+              {data.subtitle}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -29,7 +34,7 @@ export const Hero = () => {
                   size="lg"
                   className="w-full sm:w-auto rounded-2xl px-8 h-14 shadow-lg shadow-primary/20 cursor-pointer group"
                 >
-                  Naručite se na pregled
+                  {data.cta1}
                   <ChevronRight className="ml-1 w-5 h-5 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
                 </Button>
               </Link>
@@ -39,7 +44,7 @@ export const Hero = () => {
                   variant="outline"
                   className="w-full sm:w-auto rounded-2xl px-8 h-14 cursor-pointer"
                 >
-                  Naše specijalnosti
+                  {data.cta2}
                 </Button>
               </Link>
             </div>
@@ -49,12 +54,12 @@ export const Hero = () => {
           <div className="lg:col-span-1 relative">
             <div className="relative rounded-xl shadow-xl">
               <Image
-                src={HeroImage} // Replace with your actual image path
-                alt="Poliklinika Meter tim"
-                title="Poliklinika Meter tim"
+                src={data.image ? urlFor(data.image).width(600).height(800).url() : HeroImage}
+                alt={data.title || 'Poliklinika Meter'}
                 width={600}
                 height={800}
                 className="object-cover rounded-xl shadow-xl w-full h-full"
+                priority
               />
               {/* Decorative element behind image */}
               <div className="absolute -bottom-3 -right-3 -z-10 w-full h-full border-4 border-primary/20 rounded-xl" />

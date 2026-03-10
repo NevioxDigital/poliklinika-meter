@@ -54,9 +54,7 @@ export async function ProvidersAndContent({ children }: { children: React.ReactN
       <TooltipProvider>
         <MaxWidthWrapper>
           <Navbar />
-          <main className="relative grow flex-1 mt-16">
-            <BackgroundCrosses /> {children}
-          </main>
+          <main className="relative grow flex-1 mt-16">{children}</main>
           <Footer />
         </MaxWidthWrapper>
       </TooltipProvider>

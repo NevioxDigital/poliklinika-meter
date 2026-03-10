@@ -19,19 +19,26 @@ import {
 } from '@/components/ui/select';
 
 interface ContactSectionProps {
-  image?: StaticImageData | string;
+  image?: string | StaticImageData;
   services?: string[];
+  heading?: string;
+  paragraph?: string;
 }
 
 const initialState = { message: '', success: false };
 
-export const ContactSection = ({ image, services }: ContactSectionProps) => {
+export const ContactSection = ({
+  image,
+  services,
+  heading = 'Rezerviraj termin',
+  paragraph = 'Vaše zdravlje je naš prioritet.',
+}: ContactSectionProps) => {
   const [state, formAction, pending] = useActionState(handleContactForm, initialState);
 
   return (
-    <section className="spacing-section flex items-center justify-center">
+    <section className="flex items-center justify-center">
       <div
-        className={`container bg-primary/30 rounded-xl border border-primary/10 w-full min-h-[70vh] p-20 grid items-center ${
+        className={`container bg-primary/30 rounded-xl border border-primary/10 w-full min-h-[50vh] h-auto p-20 grid items-center ${
           image ? 'lg:grid-cols-2' : 'max-w-4xl px-4'
         }`}
       >
@@ -49,8 +56,8 @@ export const ContactSection = ({ image, services }: ContactSectionProps) => {
         <div className="flex items-center justify-center">
           <div className="w-full rounded-xl">
             <header className="mb-6 text-left">
-              <h2 className="text-3xl font-extrabold text-black mb-2">Rezervirajte Termin</h2>
-              <p className="text-foreground text-sm italic">Vaše zdravlje je naš prioritet.</p>
+              <h2 className="text-3xl font-extrabold text-black mb-2">{heading}</h2>
+              <p className="text-foreground text-sm italic">{paragraph}</p>
             </header>
 
             {state.success ? (

@@ -1,23 +1,33 @@
 // components/services/ServiceCard.tsx
 import { ArrowUpRight } from 'lucide-react';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
+
+import { urlFor } from '@/lib/sanity-image';
+import HeroImage from '@/public/hero.jpg';
+import { medicinaRadaRoute, specijalnostiRoute } from '@/routes';
 
 interface LandingPageCardProps {
   title: string;
-  image: string;
-  route: string;
+  image: string | StaticImageData;
+  slug: string;
+  category: string;
 }
 
-export const LandingPageCard = ({ title, image, route }: LandingPageCardProps) => {
+export const LandingPageCard = ({ title, image, slug, category }: LandingPageCardProps) => {
+  const imageUrl = image ? urlFor(image).width(600).height(450).url() : HeroImage;
+
+  const baseRoute = category === 'medicina-rada' ? medicinaRadaRoute : specijalnostiRoute;
+  const href = `${baseRoute}#${slug}`;
+
   return (
     <Link
-      href={route}
+      href={href}
       className="group relative block w-full h-75 overflow-hidden rounded-2xl bg-muted"
     >
       {/* Background Image */}
       <Image
-        src={image}
+        src={imageUrl}
         alt={title}
         fill
         className="object-cover transition-transform duration-500 group-hover:scale-110"
