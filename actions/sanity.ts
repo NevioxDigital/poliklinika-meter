@@ -11,7 +11,8 @@ export async function getSiteData() {
   cacheLife('max');
   cacheTag('site-data');
 
-  return await client.fetch(`*[_type == " siteData"][0] {
+  // FIX: Removed space before siteData
+  return await client.fetch(`*[_type == "siteData"][0] {
     title,
     description,
     keywords,
@@ -29,7 +30,7 @@ export async function getMetadata(identifier: string) {
 
   const query = `
     {
-      "data": *[_type == " siteData"][0] {
+      "data": *[_type == "siteData"][0] {
         title,
         description,
         keywords,
@@ -44,7 +45,7 @@ export async function getMetadata(identifier: string) {
         }
       }
     }
-  `;
+  `; // FIX: Removed space before siteData in the query above
   return await client.fetch(query, { identifier });
 }
 

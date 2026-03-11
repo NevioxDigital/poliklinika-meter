@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+import { getPageData } from '@/actions/sanity';
 import { ContactSection } from '@/components/contact-section';
 import { Button } from '@/components/ui/button';
 import { generateDynamicMetadata } from '@/lib/metadata';
@@ -8,6 +9,9 @@ import { kontaktRoute } from '@/routes';
 
 export default async function ContactPage() {
   'use cache';
+  const data = await getPageData('contactPage');
+
+  if (!data) return null;
   return (
     // Changed h-auto to min-h-screen to ensure full height
     <section className="relative min-h-screen w-full overflow-hidden bg-background">
@@ -21,7 +25,8 @@ export default async function ContactPage() {
       >
         <Image
           src={LocationImage}
-          alt="Our location"
+          alt="Naša lokacija"
+          title="Naša Lokacija"
           priority
           fill
           // object-right-top ensures the map focus is in the corner
@@ -40,14 +45,9 @@ export default async function ContactPage() {
           {/* LEFT SIDE: Centered Content */}
           <div className="flex flex-col justify-center py-20">
             <div className="max-w-xl">
-              <h1 className="mb-6 text-5xl lg:text-7xl font-bold tracking-tighter">
-                Let&apos;s talk.
-              </h1>
-              <p className="text-foreground mb-10">
-                We’d love to hear from you. Our team is usually active within an hour to help you
-                with any questions.
-              </p>
-              <ContactSection />
+              <h1 className="mb-6 text-5xl lg:text-7xl font-bold tracking-tighter">{data.title}</h1>
+              <p className="text-foreground mb-10">{data.subtitle}</p>
+              <ContactSection heading={data.heading} paragraph={data.paragraph} />
             </div>
           </div>
 

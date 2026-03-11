@@ -33,7 +33,6 @@ export const getNavigationConfig = (categories: any[]) => {
     })),
 
     { title: 'Naš tim', url: timRoute },
-    { title: 'Kontakt', url: kontaktRoute },
   ];
 
   // 3. Build the Footer items

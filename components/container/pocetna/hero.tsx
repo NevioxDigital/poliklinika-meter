@@ -58,6 +58,7 @@ export const Hero = ({ data }: HeroSectionProps) => {
               <Image
                 src={data.image ? urlFor(data.image).width(600).height(800).url() : HeroImage}
                 alt={data.title || 'Poliklinika Meter'}
+                title={data.title || 'Poliklinika Meter'}
                 width={600}
                 height={800}
                 className="object-cover rounded-xl shadow-xl w-full h-full"

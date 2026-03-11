@@ -15,6 +15,7 @@ export const WhyUs = ({ data }: { data: any }) => {
         <Image
           src="/images/why-us.jpg"
           alt="Zašto odabrati Polikliniku Meter"
+          title="Zašto odabrati Polikliniku Meter"
           fill
           priority
           className="object-cover object-center"

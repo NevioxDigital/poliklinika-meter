@@ -9,64 +9,64 @@ const client = createClient({
   apiVersion: '2023-05-03',
 });
 
-const doctors = [
-  { name: 'Maja Radman', title: 'prof. dr. sc.', department: 'Endokrinologija' },
-  { name: 'Ante Mršić', title: 'dr. med.', department: 'Ginekologija' },
-  { name: 'Dijana Perković', title: 'doc. dr. sc.', department: 'Imunologija' },
-  { name: 'Ivica Vuković', title: 'prof. dr. sc.', department: 'Kardiologija' },
-  { name: 'Branko Marinović', title: 'prof. dr. sc.', department: 'Kardiologija' },
-  { name: 'Antonija Đuzel', title: 'dr. med.', department: 'Kirurgija' },
-  { name: 'Nenad Ilić', title: 'prof. dr. sc.', department: 'Kirurgija' },
-  { name: 'Marko Ajduk', title: 'doc. dr. sc.', department: 'Kirurgija' },
-  { name: 'Josip Meter', title: 'dr. med.', department: 'Nefrologija' },
-  { name: 'Anton Marović', title: 'dr. sc.', department: 'Neurologija' },
-  { name: 'Dario Radović', title: 'dr. med.', department: 'Nuklearna medicina' },
-  { name: 'Bruno Luetić', title: 'dr. med.', department: 'Ortopedija' },
-  { name: 'Mirko Kontić', title: 'doc. dr. sc.', department: 'Otorinolaringologija' },
-  { name: 'Boran Uglješić', title: 'doc. dr. sc.', department: 'Psihijatrija' },
-  { name: 'Ivan Gudelj', title: 'doc. dr. sc.', department: 'Pulmologija' },
-  { name: 'Neven Vrsalović', title: 'dr. med.', department: 'Urologija' },
-];
+const globalSeoData = {
+  _id: 'siteData', // Singleton ID
+  _type: 'siteData',
 
-function createSlug(name) {
-  return name
-    .toLowerCase()
-    .replace(/č/g, 'c')
-    .replace(/ć/g, 'c')
-    .replace(/ž/g, 'z')
-    .replace(/š/g, 's')
-    .replace(/đ/g, 'd')
-    .replace(/\s+/g, '-');
-}
+  // MAX SEO TITLE: Brand + Primary Service + Location (approx 58 chars)
+  title: 'Poliklinika Meter Imotski - Medicina Rada i Specijalisti',
 
-async function resetAndMigrateDoctors() {
+  // MAX SEO DESCRIPTION: Strategic keywords + Call to Action (approx 155 chars)
+  description:
+    'Poliklinika Meter u Imotskom nudi vrhunske usluge medicine rada, ginekologije i kardiologije. Stručni tim i moderna dijagnostika za vaše zdravlje. Nazovite nas.',
+
+  // STRATEGIC KEYWORDS
+  keywords: [
+    'Poliklinika Meter',
+    'Imotski',
+    'Medicina rada Imotski',
+    'Ginekolog Imotski',
+    'Kardiologija Dalmacija',
+    'Sistematski pregledi',
+    'Liječnički pregled za vozače',
+    'Ultrazvuk Imotski',
+  ],
+
+  contactInfo: {
+    phone: '021 841 545',
+    email: 'info@poliklinika-meter.hr', // Placeholder
+    address: 'Ul. Tina Ujevića 4, 21260, Imotski',
+    googleMapsUrl: 'https://maps.app.goo.gl/RTy8scVLWmkuj4Pp6',
+    lat: 43.44752, // Precise coordinate for Tina Ujevića 4
+    lng: 17.21401,
+  },
+
+  openingHours: [
+    { days: 'Ponedjeljak - Petak', hours: '08:00 – 19:00' },
+    { days: 'Subota', hours: '08:00 – 13:00' },
+    { days: 'Nedjelja', hours: 'Zatvoreno' },
+  ],
+
+  socials: {
+    facebook: 'https://www.facebook.com/p/poliklinika_drmeter-100063538600292/?locale=hr_HR',
+    instagram: 'https://www.instagram.com/poliklinika_dr.meter/',
+  },
+};
+
+async function migrateGlobalSeo() {
   try {
-    console.log('🗑️ Deleting existing doctors...');
+    console.log('🚀 Starting Global SEO Migration...');
 
-    await client.delete({ query: '*[_type == "doctor"]' });
+    // createOrReplace ensures that even if you run this twice, it only updates the single document
+    await client.createOrReplace(globalSeoData);
 
-    console.log('🩺 Creating doctors...');
-
-    for (const doctor of doctors) {
-      const id = `doctor-${createSlug(doctor.name)}`;
-
-      const doc = {
-        _id: id,
-        _type: 'doctor',
-        name: doctor.name,
-        title: doctor.title,
-        department: doctor.department,
-      };
-
-      await client.createOrReplace(doc);
-
-      console.log(`✅ Created doctor: ${doctor.name}`);
-    }
-
-    console.log('\n✨ Doctor migration completed successfully!');
+    console.log('\n✅ SUCCESS: Global SEO and Site Data migrated.');
+    console.log(`📍 Address: ${globalSeoData.contactInfo.address}`);
+    console.log(`📞 Phone: ${globalSeoData.contactInfo.phone}`);
+    console.log('\n✨ All done!');
   } catch (err) {
-    console.error('\n❌ Migration failed:', err.message);
+    console.error('\n❌ ERROR during migration:', err.message);
   }
 }
 
-resetAndMigrateDoctors();
+migrateGlobalSeo();

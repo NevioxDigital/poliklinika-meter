@@ -61,7 +61,15 @@ export function DesktopNavbar({ items = [] }: DesktopNavbarProps) {
       >
         {/* LOGO */}
         <Link href="/" className="inline-flex items-center">
-          <Image src={Logo} alt="Logo" priority width={40} height={10} className="w-24 h-auto" />
+          <Image
+            src={Logo}
+            title="Logo"
+            alt="Logo"
+            priority
+            width={40}
+            height={10}
+            className="w-24 h-auto"
+          />
         </Link>
 
         {/* NAVIGATION */}

@@ -22,6 +22,7 @@ export const DoctorCard = ({ image, title, name, department }: DoctorCardProps) 
         <Image
           src={imageUrl}
           alt={name}
+          title={name}
           fill
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />

@@ -77,7 +77,7 @@ export function MobileNavbar({ items = [] }: MobileNavbarProps) {
         >
           {!isOpen && (
             <Link href="/" className="mr-4 transition-opacity duration-300">
-              <Image src={Logo} alt="Logo" width={50} height={18} priority />
+              <Image src={Logo} title="Logo" alt="Logo" width={50} height={18} priority />
             </Link>
           )}
 

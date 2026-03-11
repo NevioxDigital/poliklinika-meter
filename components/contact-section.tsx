@@ -46,7 +46,14 @@ export const ContactSection = ({
         {image && (
           <div className="hidden lg:flex items-center justify-center h-full">
             <div className="relative w-4/5 aspect-4/5 shadow-xl rounded-xl overflow-hidden">
-              <Image src={image} alt="Kontakt" fill className="object-cover" priority />
+              <Image
+                src={image}
+                alt="Kontakt"
+                title="Kontakt"
+                fill
+                className="object-cover"
+                priority
+              />
               <div className="absolute inset-0 bg-primary/10 backdrop-brightness-95" />
             </div>
           </div>

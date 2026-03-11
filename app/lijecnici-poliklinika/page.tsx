@@ -95,6 +95,7 @@ export default async function TeamAndClinicPage() {
                           <Image
                             src={imageUrl}
                             alt={item.alt || 'Poliklinika Meter Interijer'}
+                            title={item.alt || 'Poliklinika Meter'}
                             fill
                             className="object-cover"
                           />

@@ -18,8 +18,11 @@ export async function rootMetadata(): Promise<Metadata> {
 
   const siteData = await getSiteData();
 
+  // console.log(siteData); // This will now show data instead of null
+
   return {
-    metadataBase: new URL(baseUrl),
+    // FIX: Use the string directly, do not wrap in new URL()
+    metadataBase: baseUrl as any,
     applicationName: siteData?.title || 'Poliklinika Meter',
     authors: [{ name: 'Poliklinika Meter', url: baseUrl }],
     creator: 'Neviox Digital',
@@ -33,7 +36,7 @@ export async function rootMetadata(): Promise<Metadata> {
       default: siteData?.title || 'Poliklinika Meter',
       template: '%s | Poliklinika Meter',
     },
-    description: siteData?.description,
+    description: siteData?.description || '',
     icons: {
       icon: '/favicon.ico',
       shortcut: '/favicon-16x16.png',
@@ -41,25 +44,21 @@ export async function rootMetadata(): Promise<Metadata> {
     },
   };
 }
-/**
- * --- DYNAMIC METADATA GENERATOR ---
- * @param identifier - Sanity _type (e.g., 'teamPage') or slug (e.g., 'medicina-rada')
- * @param path - The route path for canonical URL (e.g., '/nas-tim')
- */
+
+// ... in generateDynamicMetadata ...
+// Ensure you are using the correct variable names from the fetch result
 export async function generateDynamicMetadata(identifier: string, path: string): Promise<Metadata> {
   'use cache';
   cacheLife('max');
   cacheTag('metadata-pages', `metadata-${identifier}`);
 
-  // 1. Fetch data from Sanity
   const result = await getMetadata(identifier);
 
-  // 2. Destructure the result safely
+  // These match the keys in your GROQ query: "data" and "page"
   const data = result?.data;
   const page = result?.page;
   const seo = page?.seo;
 
-  // 3. Logic: SEO Title > Page Title + Brand > Global data Title
   const finalTitle =
     seo?.title || (page?.title ? `${page.title} | Poliklinika Meter` : data?.title);
   const finalDesc = seo?.description || data?.description;

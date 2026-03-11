@@ -29,6 +29,7 @@ export const LandingPageCard = ({ title, image, slug, category }: LandingPageCar
       <Image
         src={imageUrl}
         alt={title}
+        title={title}
         fill
         className="object-cover transition-transform duration-500 group-hover:scale-110"
       />
