@@ -9,147 +9,64 @@ const client = createClient({
   apiVersion: '2023-05-03',
 });
 
-const specijalnosti = [
-  {
-    title: 'Interna medicina',
-    slug: 'interna-medicina',
-    icon: 'Activity',
-    description: 'Sveobuhvatni pregledi i dijagnostika unutarnjih organa.',
-  },
-  {
-    title: 'Ginekologija',
-    slug: 'ginekologija',
-    icon: 'Baby',
-    description: 'Zdravstvena skrb za žene, ultrazvuk i preventivni pregledi.',
-  },
-  {
-    title: 'Kardiologija',
-    slug: 'kardiologija',
-    icon: 'Heart',
-    description: 'Specijalistički pregledi srca, EKG i ultrazvuk srca.',
-  },
-  {
-    title: 'Neurologija',
-    slug: 'neurologija',
-    icon: 'Brain',
-    description: 'Dijagnostika i liječenje bolesti živčanog sustava.',
-  },
-  {
-    title: 'Ortopedija',
-    slug: 'ortopedija',
-    icon: 'Bone',
-    description: 'Liječenje bolesti i ozljeda sustava za kretanje.',
-  },
-  {
-    title: 'Kirurgija',
-    slug: 'kirurgija',
-    icon: 'Syringe',
-    description: 'Specijalistički pregledi i mali kirurški zahvati.',
-  },
-  {
-    title: 'Urologija',
-    slug: 'urologija',
-    icon: 'UserRound',
-    description: 'Pregledi i dijagnostika mokraćnog i spolnog sustava.',
-  },
-  {
-    title: 'Pulmologija',
-    slug: 'pulmologija',
-    icon: 'Wind',
-    description: 'Dijagnostika i liječenje bolesti dišnih puteva i pluća.',
-  },
-  {
-    title: 'Psihijatrija',
-    slug: 'psihijatrija',
-    icon: 'Stethoscope',
-    description: 'Stručna pomoć i savjetovanje za mentalno zdravlje.',
-  },
-  {
-    title: 'Radiologija',
-    slug: 'radiologija',
-    icon: 'Radiation',
-    description: 'Ultrazvučna dijagnostika i radiološka očitanja.',
-  },
+const doctors = [
+  { name: 'Maja Radman', title: 'prof. dr. sc.', department: 'Endokrinologija' },
+  { name: 'Ante Mršić', title: 'dr. med.', department: 'Ginekologija' },
+  { name: 'Dijana Perković', title: 'doc. dr. sc.', department: 'Imunologija' },
+  { name: 'Ivica Vuković', title: 'prof. dr. sc.', department: 'Kardiologija' },
+  { name: 'Branko Marinović', title: 'prof. dr. sc.', department: 'Kardiologija' },
+  { name: 'Antonija Đuzel', title: 'dr. med.', department: 'Kirurgija' },
+  { name: 'Nenad Ilić', title: 'prof. dr. sc.', department: 'Kirurgija' },
+  { name: 'Marko Ajduk', title: 'doc. dr. sc.', department: 'Kirurgija' },
+  { name: 'Josip Meter', title: 'dr. med.', department: 'Nefrologija' },
+  { name: 'Anton Marović', title: 'dr. sc.', department: 'Neurologija' },
+  { name: 'Dario Radović', title: 'dr. med.', department: 'Nuklearna medicina' },
+  { name: 'Bruno Luetić', title: 'dr. med.', department: 'Ortopedija' },
+  { name: 'Mirko Kontić', title: 'doc. dr. sc.', department: 'Otorinolaringologija' },
+  { name: 'Boran Uglješić', title: 'doc. dr. sc.', department: 'Psihijatrija' },
+  { name: 'Ivan Gudelj', title: 'doc. dr. sc.', department: 'Pulmologija' },
+  { name: 'Neven Vrsalović', title: 'dr. med.', department: 'Urologija' },
 ];
 
-const medicinaRada = [
-  {
-    title: 'Pregledi za zapošljavanje',
-    slug: 'pregledi-zaposljavanje',
-    icon: 'ClipboardList',
-    description: 'Liječnička uvjerenja o radnoj sposobnosti.',
-  },
-  {
-    title: 'Pregledi za vozače',
-    slug: 'pregledi-vozaci',
-    icon: 'Car',
-    description: 'Liječnički pregledi za sve kategorije vozača.',
-  },
-  {
-    title: 'Pregled za oružje',
-    slug: 'pregled-oruzje',
-    icon: 'Crosshair',
-    description: 'Liječnička uvjerenja za držanje i nošenje oružja.',
-  },
-  {
-    title: 'Pregledi za sportaše',
-    slug: 'pregledi-sportasi',
-    icon: 'Trophy',
-    description: 'Sistematski pregledi za profesionalne i amaterske sportaše.',
-  },
-];
+function createSlug(name) {
+  return name
+    .toLowerCase()
+    .replace(/č/g, 'c')
+    .replace(/ć/g, 'c')
+    .replace(/ž/g, 'z')
+    .replace(/š/g, 's')
+    .replace(/đ/g, 'd')
+    .replace(/\s+/g, '-');
+}
 
-async function resetAndMigrate() {
+async function resetAndMigrateDoctors() {
   try {
-    console.log('🗑️ Deleting all existing services...');
-    // Delete all documents of type "service"
-    await client.delete({ query: '*[_type == "service"]' });
+    console.log('🗑️ Deleting existing doctors...');
 
-    console.log('📁 Creating/Ensuring Categories exist...');
-    const categories = [
-      { id: 'cat-specijalnosti', title: 'Specijalnosti', slug: 'specijalnosti' },
-      { id: 'cat-medicina-rada', title: 'Medicina Rada', slug: 'medicina-rada' },
-    ];
+    await client.delete({ query: '*[_type == "doctor"]' });
 
-    for (const cat of categories) {
-      await client.createOrReplace({
-        _id: cat.id,
-        _type: 'category',
-        title: cat.title,
-        slug: { _type: 'slug', current: cat.slug },
-      });
-      console.log(`  ✅ Category ready: ${cat.title}`);
-    }
+    console.log('🩺 Creating doctors...');
 
-    console.log('🚀 Migrating Services...');
-    const allServices = [
-      ...specijalnosti.map((s) => ({ ...s, catId: 'cat-specijalnosti' })),
-      ...medicinaRada.map((s) => ({ ...s, catId: 'cat-medicina-rada' })),
-    ];
+    for (const doctor of doctors) {
+      const id = `doctor-${createSlug(doctor.name)}`;
 
-    for (const item of allServices) {
       const doc = {
-        _id: `service-${item.slug}`,
-        _type: 'service',
-        title: item.title,
-        description: item.description,
-        icon: item.icon,
-        slug: { _type: 'slug', current: item.slug },
-        // THIS TIES THE LINKED DATA (REFERENCE)
-        category: {
-          _type: 'reference',
-          _ref: item.catId, // Points to the ID of the category we just created
-        },
+        _id: id,
+        _type: 'doctor',
+        name: doctor.name,
+        title: doctor.title,
+        department: doctor.department,
       };
 
       await client.createOrReplace(doc);
-      console.log(`  ✅ Service created: ${item.title}`);
+
+      console.log(`✅ Created doctor: ${doctor.name}`);
     }
 
-    console.log('\n✨ Reset and Migration Successful!');
+    console.log('\n✨ Doctor migration completed successfully!');
   } catch (err) {
     console.error('\n❌ Migration failed:', err.message);
   }
 }
 
-resetAndMigrate();
+resetAndMigrateDoctors();

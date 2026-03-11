@@ -6,5 +6,6 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: 'production',
   apiVersion: '2025-03-15',
-  useCdn: false,
+  useCdn: true,
+  perspective: 'published',
 });

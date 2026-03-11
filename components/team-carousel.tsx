@@ -69,7 +69,12 @@ export function TeamCarousel({ doctors }: TeamCarouselProps) {
         <CarouselContent className="py-4 md:py-8 ml-32">
           {doctors.map((doctor, index) => (
             <CarouselItem key={index} className="pl-4 basis-[83%] md:basis-[45%] lg:basis-[26.8%]">
-              <DoctorCard {...doctor} />
+              <DoctorCard
+                name={doctor.name}
+                title={doctor.title}
+                department={doctor.department}
+                image={doctor.image}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>

@@ -1,22 +1,26 @@
 // components/team/DoctorCard.tsx
 import Image, { StaticImageData } from 'next/image';
 
-import Logo from '@/public/logo.png';
+import { urlFor } from '@/lib/sanity-image';
+import HeroImage from '@/public/hero.jpg';
 
 interface DoctorCardProps {
   image?: string | StaticImageData;
   title: string;
   name: string;
+  department: string;
 }
 
-export const DoctorCard = ({ image, title, name }: DoctorCardProps) => {
+export const DoctorCard = ({ image, title, name, department }: DoctorCardProps) => {
+  const imageUrl = image ? urlFor(image).width(600).height(750).url() : HeroImage;
+
   return (
     // Changed: items-start and text-left
     <div className="group flex flex-col items-start text-left space-y-5">
       {/* Image Wrapper - Heavy Rounding & Square Aspect */}
       <div className="relative w-full aspect-square overflow-hidden rounded-[2.5rem] bg-slate-50 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-slate-100/50">
         <Image
-          src={image || Logo}
+          src={imageUrl}
           alt={name}
           fill
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -34,6 +38,7 @@ export const DoctorCard = ({ image, title, name }: DoctorCardProps) => {
         <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary/70">
           {title}
         </span>
+        <span className="text-foreground font-medium">{department}</span>
       </div>
     </div>
   );

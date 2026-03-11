@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getAllServices, getHomeData } from '@/actions/sanity';
+import { getAllServices, getPageData } from '@/actions/sanity';
 import { BackgroundCrosses } from '@/components/background-crosses';
 import { FeaturesBar } from '@/components/container/pocetna/features-bar';
 import { Hero } from '@/components/container/pocetna/hero';
 import { LandingContact } from '@/components/container/pocetna/landing-contact';
 import { Services } from '@/components/container/pocetna/services';
 import { WhyUs } from '@/components/container/pocetna/why-us';
+import { generateDynamicMetadata } from '@/lib/metadata';
 
 export default async function HomePage() {
-  // Fetching data separately (Next.js will handle these in parallel if possible)
-  const [homeData, allServices] = await Promise.all([getHomeData(), getAllServices()]);
+  'use cache';
+  const [homeData, allServices] = await Promise.all([getPageData('homePage'), getAllServices()]);
 
   if (!homeData) return null;
 
@@ -35,4 +36,8 @@ export default async function HomePage() {
       <LandingContact data={homeData.contactSection} services={serviceTitles} />
     </div>
   );
+}
+
+export async function generateMetadata() {
+  return await generateDynamicMetadata('homePage', '/');
 }

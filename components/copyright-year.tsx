@@ -4,11 +4,13 @@
 import { useEffect, useState } from 'react';
 
 export default function CopyrightYear() {
-  // We use a safe default to prevent hydration mismatch
-  const [year, setYear] = useState(new Date().getFullYear());
+  // 1. Start with a hardcoded year.
+  // This satisfies the "Static" requirement of the build worker.
+  const [year, setYear] = useState(2026);
 
   useEffect(() => {
-    // Update on client side just in case
+    // 2. This only runs in the browser.
+    // It will update the year if the user visits the site in 2026+.
     setYear(new Date().getFullYear());
   }, []);
 

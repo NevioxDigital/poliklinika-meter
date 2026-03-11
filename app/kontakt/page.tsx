@@ -2,9 +2,12 @@ import Image from 'next/image';
 
 import { ContactSection } from '@/components/contact-section';
 import { Button } from '@/components/ui/button';
+import { generateDynamicMetadata } from '@/lib/metadata';
 import LocationImage from '@/public/lokacija.png';
+import { kontaktRoute } from '@/routes';
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  'use cache';
   return (
     // Changed h-auto to min-h-screen to ensure full height
     <section className="relative min-h-screen w-full overflow-hidden bg-background">
@@ -70,4 +73,7 @@ export default function ContactPage() {
       </div>
     </section>
   );
+}
+export async function generateMetadata() {
+  return await generateDynamicMetadata('contactPage', kontaktRoute);
 }

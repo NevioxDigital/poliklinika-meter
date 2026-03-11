@@ -4,8 +4,10 @@ import { notFound } from 'next/navigation';
 import { getCategoryPageData } from '@/actions/sanity';
 import { ServiceDetailRow } from '@/components/service-detail-row';
 import ContentWrapper from '@/components/ui/content-wrapper';
+import { generateDynamicMetadata } from '@/lib/metadata';
 
 export default async function MedicinaRadaPage() {
+  'use cache';
   const data = await getCategoryPageData('medicina-rada');
 
   // If slug doesn't exist in Sanity, return 404
@@ -36,4 +38,9 @@ export default async function MedicinaRadaPage() {
       </ContentWrapper>
     </section>
   );
+}
+
+export async function generateMetadata() {
+  // 'medicina-rada' is the slug in Sanity category
+  return await generateDynamicMetadata('medicina-rada', '/medicina-rada');
 }

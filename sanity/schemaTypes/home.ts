@@ -11,6 +11,11 @@ export const homeType = defineType({
       type: 'object',
       title: 'Hero Section',
       fields: [
+        defineField({
+          name: 'seo',
+          type: 'seo',
+          title: 'SEO Postavke za ovu stranicu',
+        }),
         {name: 'title', type: 'string', title: 'Main Title'},
         {name: 'highlightedText', type: 'string', title: 'Colored Text (e.g. Imotskog)'},
         {name: 'subtitle', type: 'text'},

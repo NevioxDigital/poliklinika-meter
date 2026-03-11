@@ -1,8 +1,9 @@
-// app/nas-tim/page.tsx
 import { Mail, MapPin, Navigation, Phone } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
+import { getTeamPageData } from '@/actions/sanity';
 import { TeamCarousel } from '@/components/team-carousel';
 import {
   Carousel,
@@ -12,40 +13,12 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import ContentWrapper from '@/components/ui/content-wrapper';
+import { generateDynamicMetadata } from '@/lib/metadata';
+import { urlFor } from '@/lib/sanity-image';
 import HeroImage from '@/public/hero.jpg';
+import { timRoute } from '@/routes';
 
-const doctors = [
-  {
-    title: 'dr. med.',
-    name: 'Ivan Meter',
-    department: 'Specijalist medicine rada i sporta',
-    image: HeroImage,
-  },
-  {
-    title: 'dr. med.',
-    name: 'Ana Horvat',
-    department: 'Specijalist kardiologije',
-    image: HeroImage,
-  },
-  {
-    title: 'dr. med.',
-    name: 'Marko Babić',
-    department: 'Specijalist ginekologije',
-    image: HeroImage,
-  },
-  {
-    title: 'dr. med.',
-    name: 'Marija Jurić',
-    department: 'Specijalist neurologije',
-    image: HeroImage,
-  },
-  {
-    title: 'dr. med.',
-    name: 'Petra Kovač',
-    department: 'Specijalist urologije',
-    image: HeroImage,
-  },
-];
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 const clinicInfo = [
   {
@@ -75,7 +48,16 @@ const clinicInfo = [
   },
 ];
 
-export default function TeamAndClinicPage() {
+export default async function TeamAndClinicPage() {
+  'use cache';
+  const data = await getTeamPageData();
+
+  if (!data?.page) {
+    return notFound();
+  }
+
+  const { page, doctors } = data;
+
   return (
     <>
       {/* SECTION 1: POLIKLINIKA */}
@@ -85,19 +67,14 @@ export default function TeamAndClinicPage() {
             {/* Left Side: Header & Text */}
             <div className="space-y-8">
               <h1 className="font-black text-primary mb-6">
-                <span className="text-foreground">Poliklinika</span> <br /> Meter Imotski
+                <span className="text-foreground">{page.hero.title}</span> <br />
+                {page.hero.highlightedText}
               </h1>
 
               <div className="space-y-6 text-lg text-foreground leading-relaxed max-w-2xl">
-                <p>
-                  Poliklinika Meter osnovana je s vizijom pružanja vrhunske medicinske usluge u
-                  modernom i ugodnom okruženju. Naš tim stručnjaka posvećen je vašem zdravlju kroz
-                  personalizirani pristup i najsuvremeniju dijagnostiku.
-                </p>
-                <p>
-                  Vjerujemo da proces ozdravljenja počinje u ugodnom ambijentu, stoga smo naš
-                  prostor uredili prema najvišim standardima udobnosti i privatnosti.
-                </p>
+                {page.hero.subtitle?.split('\n').map((line: string, i: number) => (
+                  <p key={i}>{line}</p>
+                ))}
               </div>
             </div>
 
@@ -105,18 +82,26 @@ export default function TeamAndClinicPage() {
             <div className="relative group">
               <Carousel className="w-full" opts={{ loop: true }}>
                 <CarouselContent>
-                  {[1, 2, 3].map((_, index) => (
-                    <CarouselItem key={index}>
-                      <div className="relative aspect-4/5 rounded-2xl overflow-hidden shadow-2xl">
-                        <Image
-                          src={HeroImage}
-                          alt="Interijer Poliklinike"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
+                  {page.carouselImages?.map((item: any, index: number) => {
+                    // Apply your principle:
+                    // If item.image exists, use builder. Otherwise, use local HeroImage
+                    const imageUrl = item.image
+                      ? urlFor(item.image).width(800).height(1000).url()
+                      : HeroImage;
+
+                    return (
+                      <CarouselItem key={index}>
+                        <div className="relative aspect-4/5 rounded-2xl overflow-hidden shadow-2xl">
+                          <Image
+                            src={imageUrl}
+                            alt={item.alt || 'Poliklinika Meter Interijer'}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      </CarouselItem>
+                    );
+                  })}
                 </CarouselContent>
                 {/* Minimalist arrows */}
                 <CarouselPrevious className="left-4 h-12 w-12 opacity-0 group-hover:opacity-100 transition-opacity bg-transparent border-none text-primary hover:bg-transparent hover:border-none group-hover:border-transparent hover:text-primary" />
@@ -165,7 +150,7 @@ export default function TeamAndClinicPage() {
       <section className="spacing-section-sm">
         <ContentWrapper>
           <div className="mb-12">
-            <h2 className="font-black text-foreground">Naš Stručni Tim</h2>
+            <h2 className="font-black text-foreground">{page.teamSection.title}</h2>
             <div className="w-20 h-1.5 bg-primary mt-4 rounded-full" />
           </div>
 
@@ -174,4 +159,7 @@ export default function TeamAndClinicPage() {
       </section>
     </>
   );
+}
+export async function generateMetadata() {
+  return await generateDynamicMetadata('teamPage', timRoute);
 }

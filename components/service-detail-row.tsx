@@ -38,8 +38,6 @@ export const ServiceDetailRow = ({
 
   const anchorId = typeof slug === 'string' ? slug : slug?.current;
 
-  console.log('SLUGOVI', slug);
-
   return (
     <div
       className="w-full py-12 border-b border-border last:border-0 transition-all duration-500"

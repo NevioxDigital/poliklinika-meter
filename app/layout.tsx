@@ -1,20 +1,19 @@
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 
 import { Suspense } from 'react';
 
 import { Analytics } from '@vercel/analytics/react';
 
-import { BackgroundCrosses } from '@/components/background-crosses';
 import Footer from '@/components/layout/footer';
 import Navbar from '@/components/layout/navbar';
 import MaxWidthWrapper from '@/components/max-width-wrapper';
 import { RootSkeleton } from '@/components/root-skeleton';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { generateViewport, getOrganizationSchema, homeMetadata } from '@/lib/metadata';
-import { defaultRobots, rootMetadata } from '@/lib/metadata-helpers';
+import { getOrganizationSchema } from '@/lib/metadata';
+import { generateViewport } from '@/lib/metadata';
+import { rootMetadata } from '@/lib/metadata';
 import { cn } from '@/lib/utils';
-import { baseUrl } from '@/routes';
 
 import './globals.css';
 
@@ -25,6 +24,8 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const orgSchema = await getOrganizationSchema();
+
   return (
     <html
       lang="hr"
@@ -32,57 +33,34 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
       className={cn(jakarta.variable, 'scroll-smooth')}
     >
-      <body className="antialiased bg-background text-foreground min-h-screen flex flex-col font-sans">
-        <Suspense fallback={<RootSkeleton />}>
-          <ProvidersAndContent>{children}</ProvidersAndContent>
-        </Suspense>
+      <head>
+        {/* JSON-LD schema as dangerously rendered string */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema).replace(/</g, '\\u003c') }}
+        />
+      </head>
 
+      <body className="antialiased bg-background text-foreground min-h-screen flex flex-col font-sans">
+        <MaxWidthWrapper>
+          <Navbar />
+          <Suspense fallback={<RootSkeleton />}>
+            <TooltipProvider>
+              <Suspense fallback={<RootSkeleton />}>
+                <main className="relative grow flex-1 mt-16">{children}</main>
+              </Suspense>
+            </TooltipProvider>
+          </Suspense>
+          <Footer />
+        </MaxWidthWrapper>
         <Analytics />
       </body>
     </html>
   );
 }
 
-export async function ProvidersAndContent({ children }: { children: React.ReactNode }) {
-  const orgSchema = await getOrganizationSchema();
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema).replace(/</g, '\\u003c') }}
-      />
-      <TooltipProvider>
-        <MaxWidthWrapper>
-          <Navbar />
-          <main className="relative grow flex-1 mt-16">{children}</main>
-          <Footer />
-        </MaxWidthWrapper>
-      </TooltipProvider>
-    </>
-  );
-}
-
 export async function generateMetadata(): Promise<Metadata> {
-  const homeSeo = await homeMetadata();
-
-  return {
-    metadataBase: new URL(baseUrl),
-    ...rootMetadata,
-    ...homeSeo,
-    title: {
-      template: '%s | Poliklinika Meter',
-      default: 'Poliklinika Meter | Specijalistički medicinski pregledi Imotski',
-    },
-
-    // 5. Ikone i roboti
-    icons: {
-      icon: [
-        { url: '/favicon.ico' },
-        { url: '/icon.png', type: 'image/png' }, // Dobro je imati i PNG verziju
-      ],
-      apple: [{ url: '/apple-touch-icon.png' }],
-    },
-    robots: defaultRobots,
-  };
+  return await rootMetadata();
 }
-export const viewport: Viewport = generateViewport();
+
+export const viewport = generateViewport();

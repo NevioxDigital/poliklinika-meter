@@ -4,8 +4,10 @@ import { notFound } from 'next/navigation';
 import { getCategoryPageData } from '@/actions/sanity';
 import { ServiceDetailRow } from '@/components/service-detail-row';
 import ContentWrapper from '@/components/ui/content-wrapper';
+import { generateDynamicMetadata } from '@/lib/metadata';
 
 export default async function SpecijalnostiPage() {
+  'use cache';
   const data = await getCategoryPageData('specijalnosti');
 
   if (!data) {
@@ -34,4 +36,9 @@ export default async function SpecijalnostiPage() {
       </ContentWrapper>
     </section>
   );
+}
+
+export async function generateMetadata() {
+  // 'medicina-rada' is the slug in Sanity category
+  return await generateDynamicMetadata('specijalnosti', '/specijalnosti');
 }

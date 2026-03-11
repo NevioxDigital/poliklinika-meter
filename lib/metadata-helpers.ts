@@ -1,5 +1,3 @@
-import { baseUrl } from '@/routes';
-
 /**
  * Default robots meta tag configuration
  */
@@ -69,7 +67,7 @@ export const getSocialMetadata = ({
 };
 
 /**
- * Helper function to clean and prepare keywords
+ * Helper function to clean and prepare keywords from Sanity array or string
  */
 export const cleanKeywords = (keywords?: string | string[]) => {
   if (!keywords) return [];
@@ -78,15 +76,4 @@ export const cleanKeywords = (keywords?: string | string[]) => {
     .split(',')
     .map((k) => k.trim())
     .filter(Boolean);
-};
-
-/**
- * Global root metadata
- */
-export const rootMetadata = {
-  applicationName: 'Poliklinika Meter',
-  authors: [{ name: 'Poliklinika Meter', url: baseUrl }],
-  creator: 'Neviox Digital',
-  publisher: 'Poliklinika Meter',
-  category: 'health',
 };
