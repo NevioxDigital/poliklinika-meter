@@ -2,12 +2,12 @@
 
 import dynamic from 'next/dynamic';
 
-import { MenuItem } from '@/types';
+import { MenuItems } from '@/types';
 
 import { DesktopNavbar } from './desktop-navbar';
 
 interface NavbarClientWrapperProps {
-  menuItems: MenuItem[];
+  menuItems: MenuItems[];
 }
 
 const MobileNavbar = dynamic(() => import('./mobile-navbar').then((mod) => mod.MobileNavbar), {

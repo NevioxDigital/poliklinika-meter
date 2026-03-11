@@ -4,12 +4,15 @@ import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
+import { urlFor } from '@/lib/sanity-image';
+import HeroImage from '@/public/hero.jpg';
 import { kontaktRoute } from '@/routes';
 
 interface ServiceDetailRowProps {
   title: string;
   description: string;
   image: string | StaticImageData;
+  slug: string | { current: string };
   reverse?: boolean;
   isMedicinaRada?: boolean;
 }
@@ -18,6 +21,7 @@ export const ServiceDetailRow = ({
   title,
   description,
   image,
+  slug,
   reverse = false,
   isMedicinaRada = false,
 }: ServiceDetailRowProps) => {
@@ -30,19 +34,16 @@ export const ServiceDetailRow = ({
     })
     .join(' ');
 
-  // Standard slug generation
-  const urlSlug = title
-    .toLowerCase()
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/[čć]/g, 'c') // Handle Croatian chars
-    .replace(/[š]/g, 's')
-    .replace(/[ž]/g, 'z')
-    .replace(/[đ]/g, 'd');
+  const imageUrl = image ? urlFor(image).width(600).height(450).url() : HeroImage;
+
+  const anchorId = typeof slug === 'string' ? slug : slug?.current;
+
+  console.log('SLUGOVI', slug);
 
   return (
     <div
       className="w-full py-12 border-b border-border last:border-0 transition-all duration-500"
-      id={urlSlug}
+      id={anchorId}
       /* 
          This is the magic part: 
          It offsets the landing position by 25% of the viewport height.
@@ -60,7 +61,7 @@ export const ServiceDetailRow = ({
           {/* Main Image Frame */}
           <div className="relative aspect-square overflow-hidden rounded-xl shadow-lg border border-border z-10 bg-background">
             <Image
-              src={image}
+              src={imageUrl}
               alt={title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -77,7 +78,7 @@ export const ServiceDetailRow = ({
 
         {/* 2. Content Column */}
         <div className={`flex-1 flex mt-auto ${reverse ? 'md:justify-end' : 'md:justify-start'}`}>
-          <div className="max-w-2xl w-full space-y-6 text-left">
+          <div className="max-w-2xl w-auto space-y-6 text-left">
             <h4 className="font-extrabold mb-4 md:mb-8 border-l-4 border-primary text-foreground pl-4 ">
               {title}
             </h4>

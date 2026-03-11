@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { urlFor } from '@/lib/sanity-image';
 import HeroImage from '@/public/hero.jpg';
-import { medicinaRadaRoute, specijalnostiRoute } from '@/routes';
+import { formatServiceLink } from '@/routes';
 
 interface LandingPageCardProps {
   title: string;
@@ -15,10 +15,10 @@ interface LandingPageCardProps {
 }
 
 export const LandingPageCard = ({ title, image, slug, category }: LandingPageCardProps) => {
-  const imageUrl = image ? urlFor(image).width(600).height(450).url() : HeroImage;
+  const categorySlug = category?.toLowerCase().trim().replace(/\s+/g, '-');
+  const href = formatServiceLink(categorySlug, slug);
 
-  const baseRoute = category === 'medicina-rada' ? medicinaRadaRoute : specijalnostiRoute;
-  const href = `${baseRoute}#${slug}`;
+  const imageUrl = image ? urlFor(image).width(600).height(450).url() : HeroImage;
 
   return (
     <Link

@@ -36,9 +36,9 @@ export const ContactSection = ({
   const [state, formAction, pending] = useActionState(handleContactForm, initialState);
 
   return (
-    <section className="flex items-center justify-center">
+    <section className="flex items-center justify-center py-20">
       <div
-        className={`container bg-primary/30 rounded-xl border border-primary/10 w-full min-h-[50vh] h-auto p-20 grid items-center ${
+        className={`container shadow-xl shadow-primary/30 rounded-xl border border-primary/10 w-full min-h-[50vh] h-auto p-20 grid items-center ${
           image ? 'lg:grid-cols-2' : 'max-w-4xl px-4'
         }`}
       >

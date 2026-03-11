@@ -6,13 +6,15 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { urlFor } from '@/lib/sanity-image';
 import HeroImage from '@/public/hero.jpg';
-import { kontaktRoute, specijalnostiRoute } from '@/routes';
+import { kontaktRoute } from '@/routes';
+import { formatCategoryLink } from '@/routes';
 
 type HeroSectionProps = {
   data: any;
 };
 
 export const Hero = ({ data }: HeroSectionProps) => {
+  const specialtiesUrl = formatCategoryLink('specijalnosti');
   return (
     <section className="relative">
       <div className="container px-4 mx-auto z-10">
@@ -38,7 +40,7 @@ export const Hero = ({ data }: HeroSectionProps) => {
                   <ChevronRight className="ml-1 w-5 h-5 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
                 </Button>
               </Link>
-              <Link href={specijalnostiRoute} passHref>
+              <Link href={specialtiesUrl} passHref>
                 <Button
                   size="lg"
                   variant="outline"

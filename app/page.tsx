@@ -20,9 +20,6 @@ export default async function HomePage() {
   // Concern 2: Prepare titles for the Contact Form dropdown
   const serviceTitles = allServices.map((s: any) => s.title);
 
-  console.log(homeData, 'HOME DATA');
-  console.log(allServices, 'SERVICES');
-
   return (
     <div className="spacing-section-sm">
       <BackgroundCrosses />

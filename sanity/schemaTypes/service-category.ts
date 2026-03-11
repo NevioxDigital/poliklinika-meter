@@ -6,6 +6,7 @@ export const categoryType = defineType({
   type: 'document',
   fields: [
     {name: 'title', type: 'string'}, // "Medicina Rada"
+    {name: 'description', type: 'text'},
     {name: 'slug', type: 'slug', options: {source: 'title'}}, // "medicina-rada"
   ],
 })

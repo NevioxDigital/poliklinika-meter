@@ -1,13 +1,17 @@
 import { Cross, Laptop } from 'lucide-react';
 import Link from 'next/link';
 
-import { footerMenuItems } from '@/lib/menu-items';
+import { getNavigationData } from '@/actions/sanity';
+import { getNavigationConfig } from '@/lib/menu-items';
 import { developerLink, pravneinfoRoute } from '@/routes';
-import { FooterMenuItem } from '@/types';
+import { FooterMenuItems } from '@/types';
 
 import CopyrightYear from '../copyright-year';
 
-const Footer = () => {
+const Footer = async () => {
+  const categories = await getNavigationData();
+
+  const { footerMenuItems } = getNavigationConfig(categories);
   return (
     <footer className="relative flex flex-col w-full pt-8 md:pt-16 lg:pt-20 overflow-hidden">
       <div className="absolute bottom-24 -right-25 pointer-events-none select-none -z-10 animate-pulse-slow">
@@ -30,7 +34,7 @@ const Footer = () => {
 
         {/* RIGHT COLUMN: Navigation from menuItems import */}
         <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-6 w-full lg:w-auto lg:ml-auto">
-          {footerMenuItems.map((section: FooterMenuItem, sectionIdx: number) => (
+          {footerMenuItems.map((section: FooterMenuItems, sectionIdx: number) => (
             <div key={sectionIdx} className=" w-full md:max-w-60">
               <h5 className="mb-4 font-bold text-primary block">{section.title}</h5>
               <ul className="text-muted-foreground/60 space-y-2">

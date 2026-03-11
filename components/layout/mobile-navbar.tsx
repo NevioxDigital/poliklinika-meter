@@ -11,10 +11,10 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Logo from '@/public/logo.png';
 import { pravneinfoRoute } from '@/routes';
-import { MenuItem } from '@/types';
+import { MenuItems } from '@/types';
 
 interface MobileNavbarProps {
-  items: MenuItem[];
+  items: MenuItems[];
 }
 
 export function MobileNavbar({ items = [] }: MobileNavbarProps) {
@@ -59,7 +59,7 @@ export function MobileNavbar({ items = [] }: MobileNavbarProps) {
         }
         return acc;
       },
-      { simpleLinks: [] as MenuItem[], sections: [] as MenuItem[] },
+      { simpleLinks: [] as MenuItems[], sections: [] as MenuItems[] },
     );
   }, [items]);
 

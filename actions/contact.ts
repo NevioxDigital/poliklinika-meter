@@ -20,9 +20,6 @@ const schema = z.object({
 });
 
 export async function handleContactForm(prevState: any, formData: FormData) {
-  // Debugging: See what is actually arriving at the server
-  console.log('Form Data received:', Object.fromEntries(formData.entries()));
-
   const validatedFields = schema.safeParse({
     firstName: formData.get('firstName'),
     lastName: formData.get('lastName'),

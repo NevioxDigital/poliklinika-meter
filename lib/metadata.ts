@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { cacheLife, cacheTag } from 'next/cache';
 
-import { baseUrl, specijalnostiRoute } from '@/routes';
+import { baseUrl } from '@/routes';
+import { formatFullUrl, formatServiceLink } from '@/routes';
 
 import { cleanKeywords, defaultRobots, getSocialMetadata } from './metadata-helpers';
 import { trimDescription, trimTitle } from './utils';
@@ -52,23 +53,30 @@ export const homeMetadata = async () => {
 export async function getServiceMetadata(
   title: string,
   description: string,
-  slug: string,
+  categorySlug: string, // Added this parameter
+  serviceSlug: string, // Added this parameter
 ): Promise<Metadata> {
+  // Use the central helper
+  const relativePath = formatServiceLink(categorySlug, serviceSlug);
+  const fullUrl = formatFullUrl(relativePath);
+
   const fullTitle = `${title} | Poliklinika Meter`;
-  const url = `${baseUrl}${specijalnostiRoute}/${slug}`;
 
   return {
     title: trimTitle(fullTitle),
     description: trimDescription(description),
     alternates: {
-      canonical: url,
+      canonical: fullUrl,
     },
-    robots: defaultRobots,
     openGraph: {
       title: fullTitle,
       description,
-      url,
+      url: fullUrl,
       type: 'article',
+    },
+    // This ensures JSON-LD also matches
+    other: {
+      'jsonld-id': `${fullUrl}#service`,
     },
   } satisfies Metadata;
 }

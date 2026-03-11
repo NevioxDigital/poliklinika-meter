@@ -2,29 +2,23 @@
 export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://poliklinika-meter.hr';
 
 // Main pages
-export const specijalnostiRoute = '/specijalnosti';
-export const medicinaRadaRoute = '/medicina-rada';
 export const timRoute = '/lijecnici-poliklinika';
 export const kontaktRoute = '/kontakt';
 export const pravneinfoRoute = '/pravne-informacije';
 
-// Specijalnosti anchors
-export const internaMedicinaRoute = `${specijalnostiRoute}#interna-medicina`;
-export const ginekologijaRoute = `${specijalnostiRoute}#ginekologija`;
-export const kardiologijaRoute = `${specijalnostiRoute}#kardiologija`;
-export const neurologijaRoute = `${specijalnostiRoute}#neurologija`;
-export const ortopedijaRoute = `${specijalnostiRoute}#ortopedija`;
-export const kirurgijaRoute = `${specijalnostiRoute}#kirurgija`;
-export const urologijaRoute = `${specijalnostiRoute}#urologija`;
-export const pulmologijaRoute = `${specijalnostiRoute}#pulmologija`;
-export const psihijatrijaRoute = `${specijalnostiRoute}#psihijatrija`;
-export const radiologijaRoute = `${specijalnostiRoute}#radiologija`;
+export const formatCategoryLink = (categorySlug: string) => {
+  return `/${categorySlug}`;
+};
 
-// Medicina rada anchors
-export const preglediZaposljavanjeRoute = `${medicinaRadaRoute}#pregledi-za-zaposljavanje`;
-export const preglediVozaciRoute = `${medicinaRadaRoute}#pregledi-za-vozace`;
-export const pregledOruzjeRoute = `${medicinaRadaRoute}#pregled-za-oruzje`;
-export const preglediSportasiRoute = `${medicinaRadaRoute}#pregledi-za-sportase`;
+export const formatServiceLink = (categorySlug: string, serviceSlug: string) => {
+  // We use the anchor structure since your app is built on category pages
+  return `/${categorySlug}#${serviceSlug}`;
+};
+
+export const formatFullUrl = (path: string) => {
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${baseUrl}${cleanPath}`;
+};
 
 // Socials
 export const facebookLink = 'https://www.facebook.com/nevioxdigital';

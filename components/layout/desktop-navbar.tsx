@@ -1,23 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-
-import {
-  Activity,
-  Baby,
-  Bone,
-  Brain,
-  Car,
-  ChevronRight,
-  ClipboardList,
-  Crosshair,
-  Heart,
-  Radiation,
-  Stethoscope,
-  Syringe,
-  Trophy,
-  UserRound,
-  Wind,
-} from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -37,36 +20,14 @@ import {
 import { cn } from '@/lib/utils';
 import Logo from '@/public/logo.png';
 import { kontaktRoute } from '@/routes';
-import { MenuItem } from '@/types';
+import { MenuItems } from '@/types';
 
-const getIconForUrl = (url: string) => {
-  const iconProps = {
-    className: 'w-5 h-5 text-primary/80 group-hover:text-primary transition-colors',
-  };
-
-  if (url.includes('interna')) return <Activity {...iconProps} />;
-  if (url.includes('ginekologija')) return <Baby {...iconProps} />;
-  if (url.includes('kardiologija')) return <Heart {...iconProps} />;
-  if (url.includes('neurologija')) return <Brain {...iconProps} />;
-  if (url.includes('ortopedija')) return <Bone {...iconProps} />;
-  if (url.includes('kirurgija')) return <Syringe {...iconProps} />;
-  if (url.includes('urologija')) return <UserRound {...iconProps} />;
-  if (url.includes('pulmologija')) return <Wind {...iconProps} />;
-  if (url.includes('psihijatrija')) return <Stethoscope {...iconProps} />;
-  if (url.includes('radiologija')) return <Radiation {...iconProps} />;
-
-  // Medicina rada pod-stavke
-  if (url.includes('zaposljavanje')) return <ClipboardList {...iconProps} />;
-  if (url.includes('vozaci')) return <Car {...iconProps} />;
-  if (url.includes('oruzje')) return <Crosshair {...iconProps} />;
-  if (url.includes('sportasi')) return <Trophy {...iconProps} />;
-
-  return <Activity {...iconProps} />;
-};
+import { IconRenderer } from '../icon-renderer';
 
 interface DesktopNavbarProps {
-  items: MenuItem[];
+  items: MenuItems[];
 }
+
 export function DesktopNavbar({ items = [] }: DesktopNavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
@@ -107,7 +68,7 @@ export function DesktopNavbar({ items = [] }: DesktopNavbarProps) {
         <NavigationMenu>
           <NavigationMenuList className="flex items-center gap-1">
             {items.map((item) => (
-              <NavigationMenuItem key={item.title}>
+              <NavigationMenuItem key={item.url}>
                 {item.items && item.items.length > 0 ? (
                   <>
                     <NavigationMenuTrigger className="... hover:text-primary">
@@ -116,11 +77,18 @@ export function DesktopNavbar({ items = [] }: DesktopNavbarProps) {
                     <NavigationMenuContent>
                       <div className="grid w-135 gap-2 p-4 grid-cols-2">
                         {item.items.map((subItem) => (
-                          /* FIX: Use render prop for SubMenuLink */
                           <NavigationMenuLink
                             key={subItem.url}
                             render={
-                              <SubMenuLink item={subItem} icon={getIconForUrl(subItem.url)} />
+                              <SubMenuLink
+                                item={subItem}
+                                icon={
+                                  <IconRenderer
+                                    name={subItem.icon as string}
+                                    className="w-5 h-5 text-primary/80 group-hover:text-primary transition-colors"
+                                  />
+                                }
+                              />
                             }
                           />
                         ))}
@@ -162,7 +130,7 @@ export function DesktopNavbar({ items = [] }: DesktopNavbarProps) {
 
 const SubMenuLink = React.forwardRef<
   HTMLAnchorElement,
-  { item: MenuItem; icon: React.ReactNode; [key: string]: any }
+  { item: MenuItems; icon: React.ReactNode; [key: string]: any }
 >(({ item, icon, ...props }, ref) => {
   return (
     <Link

@@ -1,14 +1,12 @@
-export interface MenuItem {
+export interface MenuItems {
   title: string;
   url: string;
   description?: string;
-  items?: MenuItem[];
+  icon?: string;
+  items?: MenuItems[];
 }
 
-export interface FooterMenuItem {
+export interface FooterMenuItems {
   title: string;
-  links: {
-    text: string;
-    url: string;
-  }[];
+  links: { text: string; url: string }[];
 }
