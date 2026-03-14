@@ -7,8 +7,9 @@ import { ServiceDetailRow } from '@/components/service-detail-row';
 import ContentWrapper from '@/components/ui/content-wrapper';
 import { generateDynamicMetadata } from '@/lib/metadata';
 
-export default async function SpecijalnostiPage() {
-  const data = await getCategoryPageData('specijalnosti');
+export default async function MedicinaRadaPage() {
+  const data = await getCategoryPageData('medicina-rada-i-sporta');
+  console.log(data.title);
 
   if (!data) {
     notFound();
@@ -18,6 +19,7 @@ export default async function SpecijalnostiPage() {
     <section className="py-20 lg:py-32">
       <ContentWrapper>
         <div className="max-w-4xl mb-12 lg:mb-20">
+          {/* Styled Page Title */}
           <h1 className="text-5xl">
             <SanityContent value={data.title} />
           </h1>
@@ -38,7 +40,7 @@ export default async function SpecijalnostiPage() {
               description={service.description}
               image={service.image}
               reverse={index % 2 !== 0}
-              isMedicinaRada={false}
+              isMedicinaRada={true}
             />
           ))}
         </div>
@@ -48,5 +50,5 @@ export default async function SpecijalnostiPage() {
 }
 
 export async function generateMetadata() {
-  return await generateDynamicMetadata('specijalnosti', '/specijalnosti');
+  return await generateDynamicMetadata('medicina-rada-i-sporta', '/medicina-rada-i-sporta');
 }

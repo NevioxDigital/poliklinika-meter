@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { CheckCircle2, Loader2 } from 'lucide-react';
@@ -6,6 +7,7 @@ import Image, { StaticImageData } from 'next/image';
 import { useActionState } from 'react';
 
 import { handleContactForm } from '@/actions/contact';
+import { SanityContent } from '@/components/sanity-content';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -21,191 +23,176 @@ import {
 interface ContactSectionProps {
   image?: string | StaticImageData;
   services?: string[];
-  heading?: string;
-  paragraph?: string;
+  heading?: any; // Changed from string to any (Portable Text)
+  paragraph?: any; // Changed from string to any (Portable Text)
 }
 
 const initialState = { message: '', success: false };
 
-export const ContactSection = ({
-  image,
-  services,
-  heading = 'Rezerviraj termin',
-  paragraph = 'Vaše zdravlje je naš prioritet.',
-}: ContactSectionProps) => {
+export const ContactSection = ({ image, services, heading, paragraph }: ContactSectionProps) => {
   const [state, formAction, pending] = useActionState(handleContactForm, initialState);
 
   return (
-    <section className="flex items-center justify-center py-20">
+    <section className="flex items-center justify-center py-12 md:py-20">
       <div
-        className={`container shadow-xl shadow-primary/30 rounded-xl border border-primary/10 w-full min-h-[50vh] h-auto p-20 grid items-center ${
-          image ? 'lg:grid-cols-2' : 'max-w-4xl px-4'
+        className={`container shadow-2xl shadow-primary/30 rounded-2xl border border-primary/5 w-full bg-background/80 p-6 md:p-12 lg:p-20 grid items-center gap-12 ${
+          image ? 'lg:grid-cols-2' : 'max-w-4xl mx-auto'
         }`}
       >
-        {/* LEFT SIDE: Centered and Smaller Image */}
+        {/* LEFT SIDE: Image */}
         {image && (
           <div className="hidden lg:flex items-center justify-center h-full">
-            <div className="relative w-4/5 aspect-4/5 shadow-xl rounded-xl overflow-hidden">
-              <Image
-                src={image}
-                alt="Kontakt"
-                title="Kontakt"
-                fill
-                className="object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-primary/10 backdrop-brightness-95" />
+            <div className="relative w-full aspect-4/5 shadow-2xl rounded-[2rem] overflow-hidden">
+              <Image src={image} alt="Kontakt" fill className="object-cover" priority />
+              <div className="absolute inset-0 bg-primary/5" />
             </div>
           </div>
         )}
 
         {/* RIGHT SIDE: Form Content */}
-        <div className="flex items-center justify-center">
-          <div className="w-full rounded-xl">
-            <header className="mb-6 text-left">
-              <h2 className="text-3xl font-extrabold text-black mb-2">{heading}</h2>
-              <p className="text-foreground text-sm italic">{paragraph}</p>
-            </header>
+        <div className="flex flex-col">
+          <header className="mb-10 text-left space-y-4">
+            {/* FIX: Use SanityContent instead of rendering the object directly */}
+            <h3 className="text-3xl md:text-4xl font-black tracking-tight">
+              <SanityContent value={heading} />
+            </h3>
 
-            {state.success ? (
-              <div className="p-8 rounded-xl text-center animate-in fade-in zoom-in duration-500">
-                <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-black mb-1">Uspješno!</h3>
-                <p className="text-muted-foreground text-sm">{state.message}</p>
+            <div className="text-foreground text-sm md:  leading-relaxed">
+              <SanityContent value={paragraph} />
+            </div>
+          </header>
+
+          {state.success ? (
+            <div className="p-10 rounded-2xl bg-primary/5 text-center animate-in fade-in zoom-in duration-500 border border-primary/10">
+              <CheckCircle2 className="w-16 h-16 text-primary mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-foreground mb-2">Uspješno poslano!</h3>
+              <p className="text-muted-foreground">{state.message}</p>
+            </div>
+          ) : (
+            <form action={formAction} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="firstName"
+                    className="text-xs font-bold uppercase tracking-widest text-primary"
+                  >
+                    Ime
+                  </Label>
+                  <Input
+                    id="firstName"
+                    name="firstName"
+                    placeholder="Ivan"
+                    required
+                    className="h-12 rounded-xl"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="lastName"
+                    className="text-xs font-bold uppercase tracking-widest text-primary"
+                  >
+                    Prezime
+                  </Label>
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Horvat"
+                    required
+                    className="h-12 rounded-xl"
+                  />
+                </div>
               </div>
-            ) : (
-              <form action={formAction} className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <Label
-                      htmlFor="firstName"
-                      className="text-xs font-bold uppercase tracking-wider text-foreground"
-                    >
-                      Ime
-                    </Label>
-                    <Input
-                      id="firstName"
-                      name="firstName"
-                      placeholder="Ivan"
-                      required
-                      className="rounded-xl bg-background"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label
-                      htmlFor="lastName"
-                      className="text-xs font-bold uppercase tracking-wider text-foreground"
-                    >
-                      Prezime
-                    </Label>
-                    <Input
-                      id="lastName"
-                      name="lastName"
-                      placeholder="Horvat"
-                      required
-                      className="rounded-xl bg-background"
-                    />
-                  </div>
-                </div>
 
-                <div className="space-y-1.5">
-                  <Label
-                    htmlFor="email"
-                    className="text-xs font-bold uppercase tracking-wider text-foreground"
-                  >
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="ivan@mail.com"
-                    required
-                    className="rounded-xl bg-background"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label
-                    htmlFor="phone"
-                    className="text-xs font-bold uppercase tracking-wider text-foreground"
-                  >
-                    Telefon
-                  </Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    placeholder="+385 91..."
-                    required
-                    className="rounded-xl bg-background"
-                  />
-                </div>
-
-                {services && services.length > 0 && (
-                  <div className="space-y-1.5">
-                    <Label
-                      htmlFor="service"
-                      className="text-xs font-bold uppercase tracking-wider text-foreground"
-                    >
-                      Usluga
-                    </Label>
-                    <Select name="service" required>
-                      <SelectTrigger className="rounded-xl bg-background w-1/2">
-                        <SelectValue placeholder="Odaberite vrstu pregleda" />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-xl">
-                        {services.map((s) => (
-                          <SelectItem key={s} value={s} className="focus:bg-primary/30">
-                            {s}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-
-                <div className="flex items-start space-x-3 p-3 ">
-                  <Checkbox
-                    id="agreement"
-                    name="agreement"
-                    required
-                    className="mt-1 rounded-sm bg-background"
-                  />
-                  <Label
-                    htmlFor="agreement"
-                    className="text-xs leading-tight text-foreground cursor-pointer mt-1"
-                  >
-                    Slažem se s uvjetima korištenja i obradom osobnih podataka u svrhu naručivanja
-                    termina.
-                  </Label>
-                </div>
-
-                {state.message && !state.success && (
-                  <p className="text-destructive text-xs font-semibold bg-destructive/5 p-3 rounded-xl border border-destructive/10">
-                    {state.message}
-                  </p>
-                )}
-
-                <Button
-                  disabled={pending}
-                  type="submit"
-                  size="lg"
-                  variant="outline"
-                  className="w-full h-12 rounded-xl border border-primary/60 text-md text-primary hover:bg-primary hover:text-background font-bold shadow-md transition-all"
+              <div className="space-y-2">
+                <Label
+                  htmlFor="email"
+                  className="text-xs font-bold uppercase tracking-widest text-primary"
                 >
-                  {pending ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Slanje...
-                    </>
-                  ) : (
-                    'Zatraži Termin'
-                  )}
-                </Button>
-              </form>
-            )}
-          </div>
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="ivan.horvat@email.com"
+                  required
+                  className="h-12 rounded-xl"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label
+                  htmlFor="phone"
+                  className="text-xs font-bold uppercase tracking-widest text-primary"
+                >
+                  Telefon
+                </Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="091 234 5678"
+                  required
+                  className="h-12 rounded-xl"
+                />
+              </div>
+
+              {services && services.length > 0 && (
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="service"
+                    className="text-xs font-bold uppercase tracking-widest text-primary"
+                  >
+                    Usluga
+                  </Label>
+                  <Select name="service" required>
+                    <SelectTrigger className="h-12 rounded-xl w-full">
+                      <SelectValue placeholder="Odaberite vrstu pregleda" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl">
+                      {services.map((s) => (
+                        <SelectItem key={s} value={s}>
+                          {s}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              <div className="flex items-start space-x-3 pt-2">
+                <Checkbox id="agreement" name="agreement" required className="mt-1" />
+                <Label
+                  htmlFor="agreement"
+                  className="text-[11px] leading-snug text-muted-foreground cursor-pointer"
+                >
+                  Slažem se s uvjetima korištenja i obradom osobnih podataka u svrhu naručivanja
+                  termina sukladno GDPR regulativi.
+                </Label>
+              </div>
+
+              {state.message && !state.success && (
+                <p className="text-destructive text-xs font-semibold bg-destructive/5 p-4 rounded-xl border border-destructive/10">
+                  {state.message}
+                </p>
+              )}
+
+              <Button
+                disabled={pending}
+                type="submit"
+                className="w-full h-14 rounded-xl font-bold shadow-lg shadow-primary/20 transition-all hover:scale-[1.01]"
+              >
+                {pending ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Slanje zahtjeva...
+                  </>
+                ) : (
+                  'Zatraži Termin Pregleda'
+                )}
+              </Button>
+            </form>
+          )}
         </div>
       </div>
     </section>

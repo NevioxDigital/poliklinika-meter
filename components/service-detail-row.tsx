@@ -1,99 +1,96 @@
-// components/services/ServiceDetailRow.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArrowRight } from 'lucide-react';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import Link from 'next/link';
 
+import { SanityContent } from '@/components/sanity-content';
 import { Button } from '@/components/ui/button';
 import { urlFor } from '@/lib/sanity-image';
 import HeroImage from '@/public/hero.jpg';
 import { kontaktRoute } from '@/routes';
 
 interface ServiceDetailRowProps {
-  title: string;
-  description: string;
-  image: string | StaticImageData;
-  slug: string | { current: string };
+  title: any;
+  plainTitle: string;
+  description: any;
+  image: any;
+  slug: any;
   reverse?: boolean;
   isMedicinaRada?: boolean;
 }
 
 export const ServiceDetailRow = ({
   title,
+  plainTitle,
   description,
   image,
   slug,
   reverse = false,
   isMedicinaRada = false,
 }: ServiceDetailRowProps) => {
-  // Logic for grammar (Kardiologija -> Kardiologiju)
-  const formattedTitle = title
+  // FIX: Perform grammar logic on the plain string, not the Sanity object
+  const formattedTitle = (plainTitle || '')
     .split(' ')
     .map((word) => {
-      if (word.length <= 3) return word; // skip small words
+      if (word.length <= 3) return word;
+      // Kardiologija -> Kardiologiju
       return word.charAt(0).toUpperCase() + word.slice(1, -1) + 'u';
     })
     .join(' ');
 
-  const imageUrl = image ? urlFor(image).width(600).height(450).url() : HeroImage;
-
+  const imageUrl = image ? urlFor(image).width(800).height(600).url() : HeroImage;
   const anchorId = typeof slug === 'string' ? slug : slug?.current;
 
   return (
     <div
-      className="w-full py-12 border-b border-border last:border-0 transition-all duration-500"
+      className="w-full py-16 md:py-24 border-b border-border last:border-0 transition-all duration-500"
       id={anchorId}
-      /* 
-         This is the magic part: 
-         It offsets the landing position by 25% of the viewport height.
-         Adjust '25vh' to '30vh' depending on your header height to get it perfectly centered.
-      */
-      style={{ scrollMarginTop: '25vh' }}
+      style={{ scrollMarginTop: '20vh' }}
     >
       <div
-        className={`flex flex-col md:flex-row md:items-center gap-10 lg:gap-20 ${
+        className={`flex flex-col md:flex-row md:items-center gap-10 lg:gap-24 ${
           reverse ? 'md:flex-row-reverse' : ''
         }`}
       >
         {/* 1. Image Container */}
-        <div className="w-full md:w-1/3 lg:w-1/4 shrink-0 relative group">
-          {/* Main Image Frame */}
-          <div className="relative aspect-square overflow-hidden rounded-xl shadow-lg border border-border z-10 bg-background">
+        <div className="w-full md:w-1/3 lg:w-1/3 shrink-0 relative group">
+          <div className="relative aspect-4/3 overflow-hidden rounded-2xl shadow-2xl border border-border z-10 bg-muted">
             <Image
               src={imageUrl}
-              alt={title}
-              title={title}
+              alt={plainTitle}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
           </div>
-
-          {/* Decorative Border */}
-          {/* Positioned absolutely relative to the group. z-0 ensures it stays behind the Image Frame (z-10) */}
           <div
-            className={`absolute -bottom-4 w-full h-full border-4 border-primary/20 rounded-xl z-0 transition-all duration-500
-              ${reverse ? '-right-3' : '-left-3'}`}
+            className={`absolute -bottom-6 w-full h-full border-2 border-primary/20 rounded-2xl z-0 transition-all duration-500
+              ${reverse ? '-right-6' : '-left-6'}`}
           />
         </div>
 
         {/* 2. Content Column */}
-        <div className={`flex-1 flex mt-auto ${reverse ? 'md:justify-end' : 'md:justify-start'}`}>
-          <div className="max-w-2xl w-auto space-y-6 text-left">
-            <h4 className="font-extrabold mb-4 md:mb-8 border-l-4 border-primary text-foreground pl-4 ">
-              {title}
-            </h4>
+        <div className="flex-1 space-y-8">
+          <header className="space-y-4">
+            {/* RENDER STYLED TITLE */}
+            <h5 className="inline-block border-l-4 border-primary pl-6 ">
+              <SanityContent value={title} />
+            </h5>
 
-            <p className="text-foreground/80 text-base">{description}</p>
+            {/* RENDER STYLED DESCRIPTION */}
+            <div className="text-lg text-muted-foreground leading-relaxed max-w-xl pl-6">
+              <SanityContent value={description} />
+            </div>
+          </header>
 
-            <Link href={kontaktRoute} className="inline-block">
-              <Button
-                size="lg"
-                className="rounded-xl px-8 h-14 text-md font-bold group gap-2 shadow-md hover:shadow-xl transition-all"
-              >
-                {!isMedicinaRada ? `Rezerviraj termin za ${formattedTitle}` : 'Kontaktirajte Nas'}
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </Link>
-          </div>
+          <Link href={kontaktRoute} className="inline-block pl-6">
+            <Button
+              size="lg"
+              className="rounded-2xl px-10 h-12 font-bold group gap-3 transition-all"
+            >
+              {!isMedicinaRada ? `Rezerviraj termin za ${formattedTitle}` : 'Kontaktirajte Nas'}
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

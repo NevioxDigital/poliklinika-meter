@@ -1,29 +1,13 @@
-import {defineField, defineType} from 'sanity'
+import {defineType, defineField} from 'sanity'
+import {simpleBlockMembers, richBlockMembers} from './blocks'
 
 export const contactPageType = defineType({
   name: 'contactPage',
-  title: 'Contact Page',
   type: 'document',
   fields: [
-    defineField({
-      name: 'title',
-      type: 'string',
-      title: 'Main Heading',
-    }),
-    defineField({
-      name: 'subtitle',
-      type: 'text',
-      title: 'Sub-heading',
-    }),
-    defineField({
-      name: 'formHeading',
-      type: 'text',
-      title: 'Form Heading',
-    }),
-    defineField({
-      name: 'formParagraph',
-      type: 'text',
-      title: 'Form Paragraph',
-    }),
+    defineField({name: 'title', type: 'array', of: simpleBlockMembers}),
+    defineField({name: 'subtitle', type: 'array', of: richBlockMembers}),
+    defineField({name: 'formHeading', type: 'array', of: simpleBlockMembers}),
+    defineField({name: 'formParagraph', type: 'array', of: richBlockMembers}),
   ],
 })

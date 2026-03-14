@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { getNotFoundMetadata } from '@/lib/metadata';
-import Logo from '@/public/logo.png';
+import Logo from '@/public/meter-logo.png';
 import { baseUrl } from '@/routes';
 
 export default async function NotFoundPage() {
@@ -24,7 +24,7 @@ export default async function NotFoundPage() {
 
         <div className="space-y-2 -mt-10 md:-mt-30">
           <h2 className="font-semibold text-primary">Stranica nije pronađena</h2>
-          <p className="text-muted-foreground max-w-lg mx-auto text-base md:text-lg">
+          <p className="text-muted-foreground max-w-lg mx-auto   md:text-lg">
             Stranica koju tražite ne postoji ili je premještena. Molimo provjerite URL ili se
             vratite na početnu stranicu.
           </p>

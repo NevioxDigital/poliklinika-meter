@@ -18,7 +18,7 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
-import Logo from '@/public/logo.png';
+import Logo from '@/public/meter-logo.png';
 import { kontaktRoute } from '@/routes';
 import { MenuItems } from '@/types';
 

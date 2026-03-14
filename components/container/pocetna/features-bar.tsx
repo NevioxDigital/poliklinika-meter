@@ -24,8 +24,11 @@ export const FeaturesBar = ({ data }: { data: FeatureItem[] }) => {
             >
               <CardContent className="flex flex-col items-center text-center p-8">
                 {/* Icon Wrapper */}
-                <div className="mb-4 p-3 rounded-full group-hover:bg-white/20 transition-colors duration-300">
-                  <IconRenderer name={feature.icon} className="w-8 h-8 text-primary" />
+                <div className="mb-4 p-3 rounded-full group-hover:bg-white/20 group-hover:text-white transition-colors duration-300">
+                  <IconRenderer
+                    name={feature.icon}
+                    className="w-8 h-8 text-primary group-hover:text-white transition-colors duration-300"
+                  />
                 </div>
 
                 {/* Content */}
@@ -37,7 +40,7 @@ export const FeaturesBar = ({ data }: { data: FeatureItem[] }) => {
                 </p>
 
                 {/* Optional "Deck" detail: A small indicator that only shows on hover */}
-                <div className="h-1 w-0 group-hover:w-12 bg-white/50 transition-all duration-500 mt-4 rounded-full" />
+                <div className="h-1 w-0 group-hover:w-12 bg-background/90 transition-all duration-500 mt-4 rounded-full" />
               </CardContent>
             </Card>
           ))}

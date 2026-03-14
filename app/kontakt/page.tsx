@@ -1,72 +1,78 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
-import { getPageData } from '@/actions/sanity';
+import { getPageData, getSiteData } from '@/actions/sanity';
 import { ContactSection } from '@/components/contact-section';
+import { SanityContent } from '@/components/sanity-content';
 import { Button } from '@/components/ui/button';
 import { generateDynamicMetadata } from '@/lib/metadata';
 import LocationImage from '@/public/lokacija.png';
 import { kontaktRoute } from '@/routes';
 
 export default async function ContactPage() {
-  'use cache';
-  const data = await getPageData('contactPage');
+  const [data, siteData] = await Promise.all([getPageData('contactPage'), getSiteData()]);
 
   if (!data) return null;
+
   return (
-    // Changed h-auto to min-h-screen to ensure full height
     <section className="relative min-h-screen w-full overflow-hidden bg-background">
       {/* 1. THE MAP IMAGE - Anchored Top-Right */}
       <div
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 opacity-40 lg:opacity-100"
         style={{
-          maskImage: 'linear-gradient(to bottom left, black 10%, transparent 65%)',
-          WebkitMaskImage: 'linear-gradient(to bottom left, black 10%, transparent 65%)',
+          maskImage: 'linear-gradient(to bottom left, black 20%, transparent 70%)',
+          WebkitMaskImage: 'linear-gradient(to bottom left, black 20%, transparent 70%)',
         }}
       >
         <Image
           src={LocationImage}
           alt="Naša lokacija"
-          title="Naša Lokacija"
           priority
           fill
-          // object-right-top ensures the map focus is in the corner
-          className="object-cover object-top-right scale-100"
-          quality={100}
+          className="object-cover object-top-right scale-105"
         />
       </div>
 
-      {/* 2. GRADIENT OVERLAY */}
-      <div className="absolute inset-0 z-1 bg-linear-to-bl from-transparent via-background/20 to-background" />
-
-      {/* 3. THE CONTENT LAYER */}
+      {/* 2. CONTENT LAYER */}
       <div className="relative z-10 min-h-screen container mx-auto px-6 lg:px-12">
-        {/* Removed items-center here so we can control columns individually */}
         <div className="grid min-h-screen lg:grid-cols-2">
           {/* LEFT SIDE: Centered Content */}
-          <div className="flex flex-col justify-center py-20">
-            <div className="max-w-xl">
-              <h1 className="mb-6 text-5xl lg:text-7xl font-bold tracking-tighter">{data.title}</h1>
-              <p className="text-foreground mb-10">{data.subtitle}</p>
-              <ContactSection heading={data.heading} paragraph={data.paragraph} />
+          <div className="flex flex-col justify-center py-24 md:py-32">
+            <div className="max-w-xl space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-5xl">
+                  <SanityContent value={data.title} />
+                </h1>
+                <div className="text-xl text-foreground leading-relaxed">
+                  <SanityContent value={data.subtitle} />
+                </div>
+              </div>
+
+              <ContactSection heading={data.formHeading} paragraph={data.formParagraph} />
             </div>
           </div>
 
-          {/* RIGHT SIDE: Content Pushed to Bottom */}
-          <div className="hidden lg:flex flex-col justify-end items-end pb-20">
-            <div className="flex flex-col justify-start items-start max-w-sm bg-background/10 backdrop-blur-sm p-6 rounded-2xl border border-white/5">
-              <h3 className="font-extrabold">Posjetite Nas</h3>
-              <p className="text-muted-foreground mt-2">
-                Ulica Tina Ujevića 6
+          {/* RIGHT SIDE: Dynamic Info Card (Desktop Only) */}
+          <div className="hidden lg:flex flex-col justify-end items-end pb-32">
+            <div className="max-w-sm bg-white/40 dark:bg-background/40 backdrop-blur-xl p-8 rounded-2xl border border-white/20 shadow-2xl">
+              <h3 className="font-bold text-xl mb-4">Gdje se nalazimo?</h3>
+              <p className="text-foreground/80 leading-relaxed mb-6">
+                {siteData.contactInfo.address}
                 <br />
-                Imotski, 21260
+                {siteData.contactInfo.phone}
               </p>
-              <Button
-                variant="link"
-                className="mt-4 p-0 h-auto text-sm font-bold cursor-pointer hover:no-underline group"
+
+              <Link
+                href={siteData.contactInfo.googleMapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center text-sm font-bold text-primary group "
               >
-                Otvori u Google Mapsu{' '}
-                <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
-              </Button>
+                <Button variant="link" className="cursor-pointer">
+                  Otvori u Google Mapsu
+                </Button>
+                <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -74,6 +80,7 @@ export default async function ContactPage() {
     </section>
   );
 }
+
 export async function generateMetadata() {
   return await generateDynamicMetadata('contactPage', kontaktRoute);
 }

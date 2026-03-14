@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getAllServices, getPageData } from '@/actions/sanity';
 import { BackgroundCrosses } from '@/components/background-crosses';
+import { ContactSection } from '@/components/contact-section';
 import { FeaturesBar } from '@/components/container/pocetna/features-bar';
 import { Hero } from '@/components/container/pocetna/hero';
 import { LandingContact } from '@/components/container/pocetna/landing-contact';
@@ -9,20 +10,25 @@ import { WhyUs } from '@/components/container/pocetna/why-us';
 import { generateDynamicMetadata } from '@/lib/metadata';
 
 export default async function HomePage() {
-  'use cache';
+  // Use cache is already handled in the actions
   const [homeData, allServices] = await Promise.all([getPageData('homePage'), getAllServices()]);
 
   if (!homeData) return null;
 
-  // Concern 1: Filter services for the "Services" section
-  const medicinaRada = allServices.filter((s: any) => s.category === 'medicina-rada');
-  const specijalnosti = allServices.filter((s: any) => s.category === 'specijalnosti');
+  // 1. DYNAMIC FILTERING
+  // These slugs must match the 'slug' field in your Sanity 'category' documents
+  const CAT_MED_RADA = 'medicina-rada-i-sporta';
+  const CAT_SPECIJALNOSTI = 'specijalnosti';
 
-  // Concern 2: Prepare titles for the Contact Form dropdown
+  const medicinaRada = allServices.filter((s: any) => s.categorySlug === CAT_MED_RADA);
+  const specijalnosti = allServices.filter((s: any) => s.categorySlug === CAT_SPECIJALNOSTI);
+
+  // 2. DROP-DOWN DATA
+  // This is now a clean array of strings ['Kardiologija', 'Ginekologija', ...]
   const serviceTitles = allServices.map((s: any) => s.title);
 
   return (
-    <div className="spacing-section-sm">
+    <div className="space-y-0">
       <BackgroundCrosses />
       <Hero data={homeData.hero} />
       <FeaturesBar data={homeData.features} />
@@ -31,7 +37,6 @@ export default async function HomePage() {
         category1={medicinaRada}
         category2={specijalnosti}
       />
-
       <WhyUs data={homeData.whyUs} />
       <LandingContact data={homeData.contactSection} services={serviceTitles} />
     </div>

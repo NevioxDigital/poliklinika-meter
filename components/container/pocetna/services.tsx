@@ -1,50 +1,59 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// components/sections/Services.tsx
 import { LandingPageCard } from '@/components/landing-card';
-import ContentWrapper from '@/components/ui/content-wrapper';
+import { SanityContent } from '@/components/sanity-content';
 
 type ServicesSectionProps = {
   data: any;
-  category1: any;
-  category2: any;
+  category1: any; // Medicina Rada
+  category2: any; // Specijalnosti
 };
 
 export const Services = ({ data, category1, category2 }: ServicesSectionProps) => {
   return (
-    <section className="spacing-section">
-      <ContentWrapper>
+    <section className="spacing-section scroll-mt-20">
+      <div className="container px-4 mx-auto">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-          <div className="max-w-xl">
-            <h2 className="font-extrabold text-foreground mb-4">{data.title}</h2>
-            <p className="text-foreground">{data.description}</p>
+        <div className="max-w-3xl mb-16 md:mb-24">
+          <h2>
+            <SanityContent value={data.title} />
+          </h2>
+          <div className="mb-12 mt-4">
+            <SanityContent value={data.description} />
           </div>
         </div>
 
-        {/* Medicina Rada Category */}
-        <div className="my-16 md:my-32">
-          <h3 className="font-bold mb-8 md:mb-12 border-l-4 border-primary text-foreground pl-4">
-            {data.heading1}
-          </h3>
+        {/* Category 1: Medicina Rada */}
+        <div className="mb-24">
+          <div className="flex items-center gap-4 mb-10">
+            <span className="h-px flex-1 bg-border" />
+            <h5 className=" font-bold uppercase tracking-[0.2em] text-primary whitespace-nowrap">
+              Medicina rada i sporta
+            </h5>
+            <span className="h-px flex-1 bg-border" />
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {category1.map((s: any) => (
-              <LandingPageCard key={s.title} {...s} />
+              <LandingPageCard key={s._id || s.slug} {...s} />
             ))}
           </div>
         </div>
 
-        {/* Specijalnosti Category */}
+        {/* Category 2: Specijalnosti */}
         <div>
-          <h3 className="font-bold mb-8 md:mb-12 border-l-4 border-primary pl-4">
-            {data.heading2}
-          </h3>
+          <div className="flex items-center gap-4 mb-10">
+            <span className="h-px flex-1 bg-border" />
+            <h5 className=" font-bold uppercase tracking-[0.2em] text-primary whitespace-nowrap">
+              Specijalistički pregledi
+            </h5>
+            <span className="h-px flex-1 bg-border" />
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {category2.map((s: any) => (
-              <LandingPageCard key={s.title} {...s} />
+              <LandingPageCard key={s._id || s.slug} {...s} />
             ))}
           </div>
         </div>
-      </ContentWrapper>
+      </div>
     </section>
   );
 };

@@ -1,31 +1,23 @@
 import {defineField, defineType} from 'sanity'
+import {simpleBlockMembers, richBlockMembers} from './blocks'
 
 export const homeType = defineType({
   name: 'homePage',
   title: 'Home Page',
   type: 'document',
   fields: [
-    // HERO SECTION
     defineField({
       name: 'hero',
       type: 'object',
-      title: 'Hero Section',
       fields: [
-        defineField({
-          name: 'seo',
-          type: 'seo',
-          title: 'SEO Postavke za ovu stranicu',
-        }),
-        {name: 'title', type: 'string', title: 'Main Title'},
-        {name: 'highlightedText', type: 'string', title: 'Colored Text (e.g. Imotskog)'},
-        {name: 'subtitle', type: 'text'},
+        defineField({name: 'seo', type: 'seo'}),
+        defineField({name: 'title', type: 'array', of: simpleBlockMembers}),
+        defineField({name: 'subtitle', type: 'array', of: richBlockMembers}),
         {name: 'image', type: 'image', options: {hotspot: true}},
         {name: 'cta1', type: 'string'},
         {name: 'cta2', type: 'string'},
       ],
     }),
-
-    // FEATURES BAR
     defineField({
       name: 'features',
       type: 'array',
@@ -40,48 +32,58 @@ export const homeType = defineType({
               name: 'icon',
               type: 'string',
               title: 'Icon Name',
-              description: 'Use names like: Stethoscope, Clock, ShieldCheck, Users',
+              description: 'Use: Stethoscope, Clock, ShieldCheck, Users, MapPin, etc.',
             },
           ],
         },
       ],
     }),
-    // SERVICES
+
     defineField({
       name: 'servicesLanding',
       type: 'object',
-      title: 'Services Section',
       fields: [
-        {name: 'title', type: 'string', title: 'Title'},
-        {name: 'description', type: 'text'},
-        {name: 'heading1', type: 'string'},
-        {name: 'heading2', type: 'string'},
+        defineField({name: 'title', type: 'array', of: simpleBlockMembers}),
+        defineField({name: 'description', type: 'array', of: richBlockMembers}),
       ],
     }),
-
-    // WHY US SECTION
     defineField({
       name: 'whyUs',
       type: 'object',
-      title: 'Why Us Section',
       fields: [
-        {name: 'badge', type: 'string', title: 'Small Top Title'},
-        {name: 'title', type: 'string'},
-        {name: 'description', type: 'text'},
-        {name: 'points', type: 'array', of: [{type: 'string'}], title: 'Checkmark Points'},
-        {name: 'bgImage', type: 'image', options: {hotspot: true}},
+        {name: 'badge', type: 'string'},
+        defineField({name: 'title', type: 'array', of: simpleBlockMembers}),
+        defineField({name: 'description', type: 'array', of: richBlockMembers}),
+        {name: 'points', type: 'array', of: [{type: 'string'}]},
+        {name: 'bgImage', type: 'image'},
         {name: 'cta', type: 'string'},
       ],
     }),
+    // schemas/homePage.ts
 
-    // CONTACT LANDING SECTION
     defineField({
       name: 'contactSection',
       type: 'object',
       title: 'Contact Section',
       fields: [
-        {name: 'heading', type: 'string', title: 'Title'},
-        {name: 'paragraph', type: 'text'},
+        defineField({
+          name: 'heading',
+          title: 'Heading',
+          type: 'array',
+          of: simpleBlockMembers,
+        }),
+        defineField({
+          name: 'paragraph',
+          title: 'Paragraph',
+          type: 'array',
+          of: richBlockMembers,
+        }),
+        defineField({
+          name: 'image',
+          title: 'Section Image',
+          type: 'image',
+          options: {hotspot: true},
+        }),
       ],
     }),
   ],

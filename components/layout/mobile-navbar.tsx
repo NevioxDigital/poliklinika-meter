@@ -9,7 +9,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import Logo from '@/public/logo.png';
+import Logo from '@/public/meter-logo.png';
 import { pravneinfoRoute } from '@/routes';
 import { MenuItems } from '@/types';
 

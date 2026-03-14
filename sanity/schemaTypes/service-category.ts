@@ -1,32 +1,13 @@
-// schemas/categoryType.ts
-import {defineField, defineType} from 'sanity'
+import {defineType, defineField} from 'sanity'
+import {simpleBlockMembers, richBlockMembers} from './blocks'
 
 export const categoryType = defineType({
   name: 'category',
-  title: 'Categories (Pages)',
   type: 'document',
   fields: [
-    defineField({
-      name: 'title',
-      type: 'string',
-      title: 'Category Title',
-    }),
-    defineField({
-      name: 'slug',
-      type: 'slug',
-      options: {source: 'title'},
-      title: 'URL Slug',
-    }),
-    defineField({
-      name: 'description',
-      type: 'text',
-      title: 'Page Introduction Text',
-    }),
-    // Reusable SEO object
-    defineField({
-      name: 'seo',
-      type: 'seo',
-      title: 'SEO data',
-    }),
+    defineField({name: 'title', type: 'array', of: simpleBlockMembers}),
+    defineField({name: 'description', type: 'array', of: richBlockMembers}),
+    {name: 'slug', type: 'slug', options: {source: 'title'}},
+    {name: 'seo', type: 'seo'},
   ],
 })

@@ -11,7 +11,6 @@ export async function getSiteData() {
   cacheLife('max');
   cacheTag('site-data');
 
-  // FIX: Removed space before siteData
   return await client.fetch(`*[_type == "siteData"][0] {
     title,
     description,
@@ -19,7 +18,8 @@ export async function getSiteData() {
     contactInfo,
     openingHours,
     socials,
-    "ogImageUrl": ogImage.asset->url
+    // SiteData schema uses "image" for the OG image
+    "ogImageUrl": image.asset->url
   }`);
 }
 
@@ -28,16 +28,17 @@ export async function getMetadata(identifier: string) {
   cacheLife('max');
   cacheTag('site-data', `metadata-${identifier}`);
 
+  // We use pt::text() to ensure the metadata title is a string even if the CMS title is styled
   const query = `
     {
-      "data": *[_type == "siteData"][0] {
+      "site": *[_type == "siteData"][0] {
         title,
         description,
         keywords,
-        "ogImageUrl": ogImage.asset->url
+        "ogImageUrl": image.asset->url
       },
       "page": *[_type == $identifier || slug.current == $identifier][0] {
-        title,
+        "title": pt::text(title), 
         seo {
           title,
           description,
@@ -45,7 +46,7 @@ export async function getMetadata(identifier: string) {
         }
       }
     }
-  `; // FIX: Removed space before siteData in the query above
+  `;
   return await client.fetch(query, { identifier });
 }
 
@@ -63,7 +64,8 @@ export async function getCategoryPageData(slug: string) {
       title,
       description,
       "services": *[_type == "service" && references(^._id)] | order(_createdAt asc) {
-        title,
+        title, // This is the RAW ARRAY for SanityContent
+        "plainTitle": pt::text(title), // This is the PLAIN STRING 
         "slug": slug.current,
         description,
         image
@@ -83,8 +85,8 @@ export async function getTeamPageData() {
       "page": *[_type == "teamPage"][0] {
         hero,
         "carouselImages": carouselImages[]{
-          "url": image.asset->url,
-          "alt": image.alt
+          "url": asset->url,
+          "alt": alt
         },
         teamSection
       },
@@ -92,7 +94,8 @@ export async function getTeamPageData() {
         name,
         title,
         department,
-        "imageUrl": image.asset->url
+        "imageUrl": image.asset->url,
+        "alt": image.alt
       }
     }
   `);
@@ -103,6 +106,7 @@ export async function getPageData(type: string) {
   cacheLife('max');
   cacheTag(`page-${type}`);
 
+  // Fetching singleton pages (homePage, contactPage, etc.)
   return await client.fetch(`*[_type == $type][0]`, { type });
 }
 
@@ -117,11 +121,13 @@ export async function getNavigationData() {
 
   return await client.fetch(`
     *[_type == "category"] | order(title asc) {
-      title,
+      "title": pt::text(title), 
       "slug": slug.current,
       "services": *[_type == "service" && references(^._id)] | order(title asc) {
-        title,
-        "slug": slug.current
+        // Use pt::text to get a plain string for the navigation menu
+        "title": pt::text(title), 
+        "slug": slug.current,
+        "icon": icon
       }
     }
   `);
@@ -133,8 +139,8 @@ export async function getAllServices() {
   cacheTag('services-all');
 
   return await client.fetch(`*[_type == "service"] {
-    title,
+    "title": pt::text(title), // Converts styled title to a plain string for the dropdown
     "slug": slug.current,
-    "categorySlug": category->slug.current
+    "categorySlug": category->slug.current // Follows the reference to the category slug
   }`);
 }

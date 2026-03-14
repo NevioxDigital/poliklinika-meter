@@ -1,20 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ContactSection } from '@/components/contact-section';
-import ContentWrapper from '@/components/ui/content-wrapper';
 import { urlFor } from '@/lib/sanity-image';
 import HeroImage from '@/public/hero.jpg';
 
 export const LandingContact = ({ data, services }: { data: any; services: any }) => {
+  if (!data) return null;
+
   return (
-    <section className="spacing-section">
-      <ContentWrapper>
+    <section className="py-20">
+      <div className="container px-4 mx-auto">
         <ContactSection
-          image={data.image ? urlFor(data.image).width(600).height(800).url() : HeroImage}
+          image={data.image ? urlFor(data.image).width(800).height(1000).url() : HeroImage}
+          // Pass the Portable Text objects directly
           heading={data.heading}
           paragraph={data.paragraph}
           services={services}
         />
-      </ContentWrapper>
+      </div>
     </section>
   );
 };
